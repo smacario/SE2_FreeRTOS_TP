@@ -1,3 +1,4 @@
 IIM42652.c:18:19:IIM42652_ReadRegister	40	static
 IIM42652.c:24:19:IIM42652_ReadMultipleRegisters	40	static
 IIM42652.c:30:19:IIM42652_WriteRegister	40	static
+IIM42652.c:36:9:IIM42652_Init	24	static
