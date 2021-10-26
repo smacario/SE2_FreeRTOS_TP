@@ -16,7 +16,6 @@
 /* Device i2c bus address with AP pin high on PCB (0b01101001) */
 #define IIM42652_I2C_ADDRESS	(0x69 << 1)
 
-
 /* Who am i register, expected return value is 0x6F */
 #define WHO_AM_I_ADD			0x75
 #define IIM42652_I2C_ID			0x6F
