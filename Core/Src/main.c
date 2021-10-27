@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "IIM42652.h"
+#include "MLX90393.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
