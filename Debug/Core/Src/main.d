@@ -36,7 +36,8 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
- C:/Users/smaca/Desktop/Documentos/UAV/Software/STM32/STM32L451RCT_FreeRTOS/Modules/Inc/IIM42652.h
+ C:/Users/smaca/Desktop/Documentos/UAV/Software/STM32/STM32L451RCT_FreeRTOS/Modules/Inc/IIM42652.h \
+ C:/Users/smaca/Desktop/Documentos/UAV/Software/STM32/STM32L451RCT_FreeRTOS/Modules/Inc/MLX90393.h
 
 ../Core/Inc/main.h:
 
@@ -115,3 +116,5 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
 
 C:/Users/smaca/Desktop/Documentos/UAV/Software/STM32/STM32L451RCT_FreeRTOS/Modules/Inc/IIM42652.h:
+
+C:/Users/smaca/Desktop/Documentos/UAV/Software/STM32/STM32L451RCT_FreeRTOS/Modules/Inc/MLX90393.h:

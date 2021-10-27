@@ -5,13 +5,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../Modules/Src/IIM42652.c 
+../Modules/Src/IIM42652.c \
+../Modules/Src/MLX90393.c 
 
 OBJS += \
-./Modules/Src/IIM42652.o 
+./Modules/Src/IIM42652.o \
+./Modules/Src/MLX90393.o 
 
 C_DEPS += \
-./Modules/Src/IIM42652.d 
+./Modules/Src/IIM42652.d \
+./Modules/Src/MLX90393.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

@@ -34,3 +34,4 @@
 "./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o"
 "./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o"
 "./Modules/Src/IIM42652.o"
+"./Modules/Src/MLX90393.o"
