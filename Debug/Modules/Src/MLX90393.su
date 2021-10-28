@@ -1,0 +1,7 @@
+MLX90393.c:15:19:MLX90393_ReadRegisterWord	40	static
+MLX90393.c:21:19:MLX90393_ReadMultipleRegisters	40	static
+MLX90393.c:27:19:MLX90393_WriteRegister	40	static
+MLX90393.c:33:9:MLX90393_EX	32	static
+MLX90393.c:104:9:MLX90393_NOP	32	static
+MLX90393.c:120:19:sendI2C	40	static
+MLX90393.c:132:9:MLX90393_Init	24	static
