@@ -60,7 +60,7 @@ uint8_t IIM42652_Init( IIM42652 *dev, I2C_HandleTypeDef *i2cHandle )
 	errNum += ( status != HAL_OK );
 
 	/* If ID not equal to IIM42652_I2C_ID, Init returns with an error code */
-	if( regDataID != IIM42652_I2C_ID ) return 0xFF;
+	if( regDataID != IIM42652_I2C_ID ) return HAL_ERROR;
 
 
 	return 0;

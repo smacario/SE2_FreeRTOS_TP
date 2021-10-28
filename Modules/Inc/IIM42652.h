@@ -72,7 +72,7 @@
 #define ACCL_CONFIG0_ADD		(0x50)
 #define GYRO_CONFIG1_ADD		(0x51)
 #define GYR_ACC_CONFIG0_ADD		(0X52)
-#define ACCL_CONFIG1_ADD		(0X53))
+#define ACCL_CONFIG1_ADD		(0X53)
 
 #define INT_CONFIG0_ADD			(0x63)
 #define INT_CONFIG1_ADD			(0x64)
