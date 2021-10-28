@@ -14,9 +14,9 @@
 #include "stm32l4xx_hal.h"
 
 /*
- * The MLX90393 only listens to a specific set of commands. Apart from the Reset
- * command, all commands generate a status byte that can be read out. The MLX90393 will
- * always acknowledge a command in I2C, even if the command is not a valid command
+ * The MLX90393 only listens to a specific set of commands in a command / response architecture.
+ * Apart from the Reset command, all commands generate a status byte that can be read out.
+ * The MLX90393 will always acknowledge a command in I2C, even if the command is not a valid command
  *
  * */
 
@@ -134,21 +134,29 @@ typedef enum mlx90393_oversampling {
 
 /* Function prototypes */
 
-uint8_t MLX90393_Init( IIM42652 *dev, I2C_HandleTypeDef *i2cHandle );
+uint8_t MLX90393_Init( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle );
 
-HAL_StatusTypeDef MLX90393_ReadRegister( IIM42652 *dev, uint8_t reg, uint8_t *data );
-HAL_StatusTypeDef MLX90393_ReadMultipleRegisters( IIM42652 *dev, uint8_t reg, uint8_t *data, uint8_t length );
+HAL_StatusTypeDef sendI2C( I2C_HandleTypeDef *hi2c, uint8_t *receiveBuffer, uint8_t *sendBuffer, uint8_t sendMessageLength, uint8_t receiveMessageLength );
 
-HAL_StatusTypeDef MLX90393_WriteRegister( IIM42652 *dev, uint8_t reg, uint8_t *data );
+HAL_StatusTypeDef MLX90393_ReadRegister( MLX90393 *dev, uint8_t reg, uint8_t *data );
+HAL_StatusTypeDef MLX90393_ReadMultipleRegisters( MLX90393 *dev, uint8_t reg, uint8_t *data, uint8_t length );
 
-uint8_t MLX90393_ExitMode( void );
-uint8_t MLX90393_Reset( void );
-
-uint8_t MLX90393_ReadAxis( float *x, float *y, float *z );
+HAL_StatusTypeDef MLX90393_WriteRegister( MLX90393 *dev, uint8_t reg, uint8_t *data );
 
 
+/* Command function prototypes */
 
-
+uint8_t MLX90393_EX		( MLX90393 *dev );
+uint8_t MLX90393_SB		( MLX90393 *dev, uint8_t zyxt );
+uint8_t MLX90393_SWOC	( MLX90393 *dev, uint8_t zyxt );
+uint8_t MLX90393_SM		( MLX90393 *dev, uint8_t zyxt );
+uint8_t MLX90393_RM		( MLX90393 *dev );
+uint8_t MLX90393_RR		( MLX90393 *dev, uint16_t *data );
+uint8_t MLX90393_WR		( MLX90393 *dev, uint16_t *data, uint8_t add );
+uint8_t MLX90393_RT		( MLX90393 *dev );
+uint8_t MLX90393_HR		( MLX90393 *dev );
+uint8_t MLX90393_HS		( MLX90393 *dev );
+uint8_t MLX90393_NOP	( MLX90393 *dev );
 
 
 #endif /* INC_MLX90393_H_ */
