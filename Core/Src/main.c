@@ -53,6 +53,7 @@ const osThreadAttr_t defaultTask_attributes = {
 };
 /* USER CODE BEGIN PV */
 IIM42652 IMU;
+MLX90393 MAG;
 
 /* USER CODE END PV */
 
@@ -121,11 +122,12 @@ int main(void)
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
 
-  uint8_t i2cStatus = 0;
+  HAL_StatusTypeDef i2cStatus = HAL_OK;
 
-  i2cStatus = IIM42652_Init(&IMU, &hi2c2);
+  i2cStatus |= IIM42652_Init(&IMU, &hi2c2);
+  i2cStatus |= MLX90393_Init(&MAG, &hi2c2);
 
-  if(i2cStatus);
+  if(i2cStatus == HAL_ERROR);
 
   /* USER CODE END 2 */
 
