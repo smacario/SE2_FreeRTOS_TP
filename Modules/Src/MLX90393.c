@@ -29,6 +29,7 @@ HAL_StatusTypeDef MLX90393_WriteRegister( MLX90393 *dev, uint8_t reg, uint8_t *d
 	return HAL_I2C_Mem_Write( dev->i2cHandle, MLX90393_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY );
 }
 
+
 /* EXit command, returns the status */
 uint8_t MLX90393_EX	( MLX90393 *dev)
 {
@@ -44,25 +45,63 @@ uint8_t MLX90393_EX	( MLX90393 *dev)
 	}
 }
 
-/*
+
+/* Start Burst command, zyxt determines which axis to measure */
 uint8_t MLX90393_SB	( MLX90393 *dev, uint8_t zyxt )
 {
+	uint8_t status;
+	HAL_StatusTypeDef i2c_status = HAL_OK;
 
+	/* Construct the SB command with axis from function parameters */
+	uint8_t command = MLX90393_REG_SB | ( zyxt & 0x0F );
+
+	i2c_status = sendI2C( dev->i2cHandle, &status, &command, 1, 1 );
+
+	/* Checks the HAL status of i2c transaction */
+	if(i2c_status != HAL_OK) return MLX90393_STATUS_ERROR;
+	else{
+		return status;
+	}
 }
 
 
+/* Start Wake-up On Change command, zyxt determines which axis to measure */
 uint8_t MLX90393_SWOC ( MLX90393 *dev, uint8_t zyxt )
 {
+	uint8_t status;
+	HAL_StatusTypeDef i2c_status = HAL_OK;
 
+	/* Construct the SB command with axis from function parameters */
+	uint8_t command = MLX90393_REG_SW | ( zyxt & 0x0F );
+
+	i2c_status = sendI2C( dev->i2cHandle, &status, &command, 1, 1 );
+
+	/* Checks the HAL status of i2c transaction */
+	if(i2c_status != HAL_OK) return MLX90393_STATUS_ERROR;
+	else{
+		return status;
+	}
 }
 
-
+/* Start Measurement (polling), zyxt determines which axis to measure */
 uint8_t MLX90393_SM	( MLX90393 *dev, uint8_t zyxt )
 {
+	uint8_t status;
+	HAL_StatusTypeDef i2c_status = HAL_OK;
 
+	/* Construct the SB command with axis from function parameters */
+	uint8_t command = MLX90393_REG_SM | ( zyxt & 0x0F );
+
+	i2c_status = sendI2C( dev->i2cHandle, &status, &command, 1, 1 );
+
+	/* Checks the HAL status of i2c transaction */
+	if(i2c_status != HAL_OK) return MLX90393_STATUS_ERROR;
+	else{
+		return status;
+	}
 }
 
-
+/*
 uint8_t MLX90393_RM	( MLX90393 *dev )
 {
 
@@ -80,24 +119,52 @@ uint8_t MLX90393_WR	( MLX90393 *dev, uint16_t *data, uint8_t add )
 
 }
 
+*/
 
 uint8_t MLX90393_RT	( MLX90393 *dev )
 {
+	uint8_t status;
+	HAL_StatusTypeDef i2c_status = HAL_OK;
 
+	i2c_status = sendI2C( dev->i2cHandle, &status, (uint8_t*)MLX90393_REG_RT, 1, 1 );
+
+	/* Checks the HAL status of i2c transaction */
+	if(i2c_status != HAL_OK) return MLX90393_STATUS_ERROR;
+	else{
+		return status;
+	}
 }
 
 
 uint8_t MLX90393_HR	( MLX90393 *dev )
 {
+	uint8_t status;
+	HAL_StatusTypeDef i2c_status = HAL_OK;
 
+	i2c_status = sendI2C( dev->i2cHandle, &status, (uint8_t*)MLX90393_REG_HR, 1, 1 );
+
+	/* Checks the HAL status of i2c transaction */
+	if(i2c_status != HAL_OK) return MLX90393_STATUS_ERROR;
+	else{
+		return status;
+	}
 }
 
 
 uint8_t MLX90393_HS	( MLX90393 *dev )
 {
+	uint8_t status;
+	HAL_StatusTypeDef i2c_status = HAL_OK;
 
+	i2c_status = sendI2C( dev->i2cHandle, &status, (uint8_t*)MLX90393_REG_HS, 1, 1 );
+
+	/* Checks the HAL status of i2c transaction */
+	if(i2c_status != HAL_OK) return MLX90393_STATUS_ERROR;
+	else{
+		return status;
+	}
 }
-*/
+
 
 
 /* No Operation command, returns the status */
