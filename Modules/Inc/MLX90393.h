@@ -49,6 +49,12 @@
 #define MLX90393_STATUS_MASK 		(0xFC)
 
 
+#define RM_DATA_LENGHT				(9)
+#define RR_DATA_LENGHT				(3)
+#define RR_ADDR_LENGHT				(2)
+#define WR_DATA_LENGHT				(4)
+
+
 /* Sensor struct
  *
  * 	Stores the Magnetometer data
@@ -80,57 +86,59 @@ enum {
 };
 
 
-/* Gain settings for CONF1 register */
-typedef enum mlx90393_gain {
-  MLX90393_GAIN_5X = (0x00),
-  MLX90393_GAIN_4X,
-  MLX90393_GAIN_3X,
-  MLX90393_GAIN_2_5X,
-  MLX90393_GAIN_2X,
-  MLX90393_GAIN_1_67X,
-  MLX90393_GAIN_1_33X,
-  MLX90393_GAIN_1X
-} mlx90393_gain_t;
+/* MLX90393_CONFIG_1_ADD register */
+typedef union
+{
+    struct
+    {
+        unsigned HALLCONF:4;
+        unsigned GAINSEL:3;
+        unsigned ZSERIES:1;
+        unsigned BIST:1;
+        unsigned ANA:7;
+    };
+
+    uint16_t data;
+
+}MLX90393_CONF_1;
 
 
-/* Resolution settings for CONF3 register */
-typedef enum mlx90393_resolution {
-  MLX90393_RES_16,
-  MLX90393_RES_17,
-  MLX90393_RES_18,
-  MLX90393_RES_19,
-} mlx90393_resolution_t;
+/* MLX90393_CONFIG_2_ADD register */
+typedef union
+{
+    struct
+    {
+        unsigned BDR:5;
+        unsigned BURSTSEL:4;
+        unsigned TCMPEN:1;
+        unsigned EXTTRG:1;
+        unsigned WOCDIFF:1;
+        unsigned COMMODE:2;
+        unsigned TRIGINT:1;
+    };
+
+    uint16_t data;
+
+}MLX90393_CONF_2;
 
 
-/* Axis designator */
-typedef enum mlx90393_axis {
-  MLX90393_X,
-  MLX90393_Y,
-  MLX90393_Z
-} mlx90393_axis_t;
+/* MLX90393_CONFIG_3_ADD register */
+typedef union
+{
+    struct
+    {
+        unsigned OSR:2;
+        unsigned DIGFIL:3;
+        unsigned RESX:2;
+        unsigned RESY:2;
+        unsigned RESZ:2;
+        unsigned OSR2:2;
+        unsigned :3;
+    };
 
+    uint16_t data;
 
-/* Digital filter settings for CONF3 register */
-typedef enum mlx90393_filter {
-  MLX90393_FILTER_0,
-  MLX90393_FILTER_1,
-  MLX90393_FILTER_2,
-  MLX90393_FILTER_3,
-  MLX90393_FILTER_4,
-  MLX90393_FILTER_5,
-  MLX90393_FILTER_6,
-  MLX90393_FILTER_7,
-} mlx90393_filter_t;
-
-
-/* Oversampling settings for CONF3 register */
-typedef enum mlx90393_oversampling {
-  MLX90393_OSR_0,
-  MLX90393_OSR_1,
-  MLX90393_OSR_2,
-  MLX90393_OSR_3,
-} mlx90393_oversampling_t;
-
+}MLX90393_CONF_3;
 
 /* Function prototypes */
 
@@ -150,8 +158,8 @@ uint8_t MLX90393_EX		( MLX90393 *dev );
 uint8_t MLX90393_SB		( MLX90393 *dev, uint8_t zyxt );
 uint8_t MLX90393_SWOC	( MLX90393 *dev, uint8_t zyxt );
 uint8_t MLX90393_SM		( MLX90393 *dev, uint8_t zyxt );
-uint8_t MLX90393_RM		( MLX90393 *dev );
-uint8_t MLX90393_RR		( MLX90393 *dev, uint16_t *data );
+uint8_t MLX90393_RM		( MLX90393 *dev, uint8_t zyxt, uint8_t* readData );
+uint8_t MLX90393_RR		( MLX90393 *dev, uint8_t regAddress, uint8_t *readData );
 uint8_t MLX90393_WR		( MLX90393 *dev, uint16_t *data, uint8_t add );
 uint8_t MLX90393_RT		( MLX90393 *dev );
 uint8_t MLX90393_HR		( MLX90393 *dev );
