@@ -5,45 +5,45 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .isr_vector   00000194  08000000  08000000  00010000  2**0
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  1 .text         00005838  080001a0  080001a0  000101a0  2**4
+  1 .text         00005914  080001a0  080001a0  000101a0  2**4
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000090  080059d8  080059d8  000159d8  2**2
+  2 .rodata       00000090  08005ab4  08005ab4  00015ab4  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08005a68  08005a68  00020010  2**0
+  3 .ARM.extab    00000000  08005b44  08005b44  00020010  2**0
                   CONTENTS
-  4 .ARM          00000000  08005a68  08005a68  00020010  2**0
+  4 .ARM          00000000  08005b44  08005b44  00020010  2**0
                   CONTENTS
-  5 .preinit_array 00000000  08005a68  08005a68  00020010  2**0
+  5 .preinit_array 00000000  08005b44  08005b44  00020010  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  08005a68  08005a68  00015a68  2**2
+  6 .init_array   00000004  08005b44  08005b44  00015b44  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .fini_array   00000004  08005a6c  08005a6c  00015a6c  2**2
+  7 .fini_array   00000004  08005b48  08005b48  00015b48  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         00000010  20000000  08005a70  00020000  2**2
+  8 .data         00000010  20000000  08005b4c  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          000019b0  20000010  08005a80  00020010  2**2
+  9 .bss          000019b0  20000010  08005b5c  00020010  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  200019c0  08005a80  000219c0  2**0
+ 10 ._user_heap_stack 00000600  200019c0  08005b5c  000219c0  2**0
                   ALLOC
  11 .ARM.attributes 00000030  00000000  00000000  00020010  2**0
                   CONTENTS, READONLY
- 12 .debug_info   00018a98  00000000  00000000  00020040  2**0
+ 12 .debug_info   00018e3e  00000000  00000000  00020040  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00003257  00000000  00000000  00038ad8  2**0
+ 13 .debug_abbrev 00003304  00000000  00000000  00038e7e  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 000011d8  00000000  00000000  0003bd30  2**3
+ 14 .debug_aranges 000011f0  00000000  00000000  0003c188  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_ranges 00001080  00000000  00000000  0003cf08  2**3
+ 15 .debug_ranges 00001098  00000000  00000000  0003d378  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00003644  00000000  00000000  0003df88  2**0
+ 16 .debug_macro  00003674  00000000  00000000  0003e410  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   000137c5  00000000  00000000  000415cc  2**0
+ 17 .debug_line   00013889  00000000  00000000  00041a84  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    000cf415  00000000  00000000  00054d91  2**0
+ 18 .debug_str    000cf56d  00000000  00000000  0005530d  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  001241a6  2**0
+ 19 .comment      00000053  00000000  00000000  0012487a  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  000048fc  00000000  00000000  001241fc  2**2
+ 20 .debug_frame  00004968  00000000  00000000  001248d0  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -62,7 +62,7 @@ Disassembly of section .text:
  80001b6:	bd10      	pop	{r4, pc}
  80001b8:	20000010 	.word	0x20000010
  80001bc:	00000000 	.word	0x00000000
- 80001c0:	080059c0 	.word	0x080059c0
+ 80001c0:	08005a9c 	.word	0x08005a9c
 
 080001c4 <frame_dummy>:
  80001c4:	b508      	push	{r3, lr}
@@ -74,7 +74,7 @@ Disassembly of section .text:
  80001d2:	bd08      	pop	{r3, pc}
  80001d4:	00000000 	.word	0x00000000
  80001d8:	20000014 	.word	0x20000014
- 80001dc:	080059c0 	.word	0x080059c0
+ 80001dc:	08005a9c 	.word	0x08005a9c
 
 080001e0 <task>:
 /* USER CODE END PFP */
@@ -191,7 +191,7 @@ int main(void)
   i2cStatus |= MLX90393_Init(&MAG, &hi2c2);
  8000270:	490f      	ldr	r1, [pc, #60]	; (80002b0 <main+0x6c>)
  8000272:	4811      	ldr	r0, [pc, #68]	; (80002b8 <main+0x74>)
- 8000274:	f005 fb41 	bl	80058fa <MLX90393_Init>
+ 8000274:	f005 fb6f 	bl	8005956 <MLX90393_Init>
  8000278:	4603      	mov	r3, r0
  800027a:	461a      	mov	r2, r3
  800027c:	79fb      	ldrb	r3, [r7, #7]
@@ -246,10 +246,10 @@ int main(void)
  80002b0:	200018fc 	.word	0x200018fc
  80002b4:	20001948 	.word	0x20001948
  80002b8:	20001968 	.word	0x20001968
- 80002bc:	08005a04 	.word	0x08005a04
+ 80002bc:	08005ae0 	.word	0x08005ae0
  80002c0:	080004a1 	.word	0x080004a1
  80002c4:	200018f8 	.word	0x200018f8
- 80002c8:	080059e4 	.word	0x080059e4
+ 80002c8:	08005ac0 	.word	0x08005ac0
  80002cc:	080001e1 	.word	0x080001e1
 
 080002d0 <SystemClock_Config>:
@@ -267,7 +267,7 @@ void SystemClock_Config(void)
  80002da:	2244      	movs	r2, #68	; 0x44
  80002dc:	2100      	movs	r1, #0
  80002de:	4618      	mov	r0, r3
- 80002e0:	f005 fb66 	bl	80059b0 <memset>
+ 80002e0:	f005 fbd4 	bl	8005a8c <memset>
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
  80002e4:	463b      	mov	r3, r7
  80002e6:	2200      	movs	r2, #0
@@ -690,7 +690,7 @@ void HAL_I2C_MspInit(I2C_HandleTypeDef* hi2c)
  8000528:	2264      	movs	r2, #100	; 0x64
  800052a:	2100      	movs	r1, #0
  800052c:	4618      	mov	r0, r3
- 800052e:	f005 fa3f 	bl	80059b0 <memset>
+ 800052e:	f005 faad 	bl	8005a8c <memset>
   if(hi2c->Instance==I2C2)
  8000532:	687b      	ldr	r3, [r7, #4]
  8000534:	681b      	ldr	r3, [r3, #0]
@@ -1056,7 +1056,7 @@ LoopFillZerobss:
 
 /* Call static constructors */
     bl __libc_init_array
- 800069e:	f005 f955 	bl	800594c <__libc_init_array>
+ 800069e:	f005 f9c3 	bl	8005a28 <__libc_init_array>
 /* Call the application's entry point.*/
 	bl	main
  80006a2:	f7ff fdcf 	bl	8000244 <main>
@@ -1069,7 +1069,7 @@ LoopForever:
   ldr   sp, =_estack    /* Set stack pointer */
  80006a8:	20020000 	.word	0x20020000
 	ldr	r3, =_sidata
- 80006ac:	08005a70 	.word	0x08005a70
+ 80006ac:	08005b4c 	.word	0x08005b4c
 	ldr	r0, =_sdata
  80006b0:	20000000 	.word	0x20000000
 	ldr	r3, =_edata
@@ -5018,7 +5018,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
         while(READ_BIT(RCC->CR, RCC_CR_HSERDY) == 0U)
  8001d02:	e010      	b.n	8001d26 <HAL_RCC_OscConfig+0x2ba>
  8001d04:	40021000 	.word	0x40021000
- 8001d08:	08005a28 	.word	0x08005a28
+ 8001d08:	08005b04 	.word	0x08005b04
  8001d0c:	20000000 	.word	0x20000000
  8001d10:	20000004 	.word	0x20000004
         {
@@ -6364,7 +6364,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
  800245a:	bf00      	nop
  800245c:	40022000 	.word	0x40022000
  8002460:	40021000 	.word	0x40021000
- 8002464:	08005a28 	.word	0x08005a28
+ 8002464:	08005b04 	.word	0x08005b04
  8002468:	20000000 	.word	0x20000000
  800246c:	20000004 	.word	0x20000004
 
@@ -6569,7 +6569,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
  8002574:	4770      	bx	lr
  8002576:	bf00      	nop
  8002578:	40021000 	.word	0x40021000
- 800257c:	08005a38 	.word	0x08005a38
+ 800257c:	08005b14 	.word	0x08005b14
  8002580:	00f42400 	.word	0x00f42400
  8002584:	01312d00 	.word	0x01312d00
 
@@ -10101,7 +10101,7 @@ UBaseType_t uxMessagesWaiting;
  800380a:	6c1b      	ldr	r3, [r3, #64]	; 0x40
  800380c:	461a      	mov	r2, r3
  800380e:	68b9      	ldr	r1, [r7, #8]
- 8003810:	f002 f8c0 	bl	8005994 <memcpy>
+ 8003810:	f002 f92e 	bl	8005a70 <memcpy>
 		pxQueue->pcWriteTo += pxQueue->uxItemSize; /*lint !e9016 Pointer arithmetic on char types ok, especially in this use case where it is the clearest way of conveying intent. */
  8003814:	68fb      	ldr	r3, [r7, #12]
  8003816:	685a      	ldr	r2, [r3, #4]
@@ -10136,7 +10136,7 @@ UBaseType_t uxMessagesWaiting;
  800383e:	6c1b      	ldr	r3, [r3, #64]	; 0x40
  8003840:	461a      	mov	r2, r3
  8003842:	68b9      	ldr	r1, [r7, #8]
- 8003844:	f002 f8a6 	bl	8005994 <memcpy>
+ 8003844:	f002 f914 	bl	8005a70 <memcpy>
 		pxQueue->u.xQueue.pcReadFrom -= pxQueue->uxItemSize;
  8003848:	68fb      	ldr	r3, [r7, #12]
  800384a:	68da      	ldr	r2, [r3, #12]
@@ -10254,7 +10254,7 @@ static void prvCopyDataFromQueue( Queue_t * const pxQueue, void * const pvBuffer
  80038d2:	6c1b      	ldr	r3, [r3, #64]	; 0x40
  80038d4:	461a      	mov	r2, r3
  80038d6:	6838      	ldr	r0, [r7, #0]
- 80038d8:	f002 f85c 	bl	8005994 <memcpy>
+ 80038d8:	f002 f8ca 	bl	8005a70 <memcpy>
 	}
 }
  80038dc:	bf00      	nop
@@ -10909,7 +10909,7 @@ BaseType_t xReturn;
  8003bf8:	009b      	lsls	r3, r3, #2
  8003bfa:	461a      	mov	r2, r3
  8003bfc:	21a5      	movs	r1, #165	; 0xa5
- 8003bfe:	f001 fed7 	bl	80059b0 <memset>
+ 8003bfe:	f001 ff45 	bl	8005a8c <memset>
 	grows from high memory to low (as per the 80x86) or vice versa.
 	portSTACK_GROWTH is used to make the result positive or negative as required
 	by the port. */
@@ -11518,7 +11518,7 @@ BaseType_t xReturn;
  8003efa:	3718      	adds	r7, #24
  8003efc:	46bd      	mov	sp, r7
  8003efe:	bd80      	pop	{r7, pc}
- 8003f00:	080059ec 	.word	0x080059ec
+ 8003f00:	08005ac8 	.word	0x08005ac8
  8003f04:	08004531 	.word	0x08004531
  8003f08:	20000be4 	.word	0x20000be4
  8003f0c:	20000be0 	.word	0x20000be0
@@ -13402,7 +13402,7 @@ BaseType_t xReturn = pdFAIL;
  8004918:	46bd      	mov	sp, r7
  800491a:	bd80      	pop	{r7, pc}
  800491c:	20000c1c 	.word	0x20000c1c
- 8004920:	080059f4 	.word	0x080059f4
+ 8004920:	08005ad0 	.word	0x08005ad0
  8004924:	08004a61 	.word	0x08004a61
  8004928:	20000c20 	.word	0x20000c20
 
@@ -14502,7 +14502,7 @@ static void prvCheckForValidListAndQueue( void )
  8004f28:	20000c18 	.word	0x20000c18
  8004f2c:	20000cc8 	.word	0x20000cc8
  8004f30:	20000c28 	.word	0x20000c28
- 8004f34:	080059fc 	.word	0x080059fc
+ 8004f34:	08005ad8 	.word	0x08005ad8
 
 08004f38 <pxPortInitialiseStack>:
 
@@ -16144,230 +16144,377 @@ uint8_t IIM42652_Init( IIM42652 *dev, I2C_HandleTypeDef *i2cHandle )
  8005864:	46bd      	mov	sp, r7
  8005866:	bd80      	pop	{r7, pc}
 
-08005868 <MLX90393_NOP>:
+08005868 <MLX90393_WR>:
+}
 
 
-
-/* No Operation command, returns the status */
-uint8_t MLX90393_NOP ( MLX90393 *dev )
+/* Write Register command, writes a word size register directly into volatile RAM */
+uint8_t MLX90393_WR	( MLX90393 *dev, uint16_t *data, uint8_t regAddress )
 {
  8005868:	b580      	push	{r7, lr}
- 800586a:	b086      	sub	sp, #24
+ 800586a:	b088      	sub	sp, #32
  800586c:	af02      	add	r7, sp, #8
- 800586e:	6078      	str	r0, [r7, #4]
+ 800586e:	60f8      	str	r0, [r7, #12]
+ 8005870:	60b9      	str	r1, [r7, #8]
+ 8005872:	4613      	mov	r3, r2
+ 8005874:	71fb      	strb	r3, [r7, #7]
 	uint8_t status;
+	uint8_t sendBuffer[4];
 	HAL_StatusTypeDef i2c_status = HAL_OK;
- 8005870:	2300      	movs	r3, #0
- 8005872:	73fb      	strb	r3, [r7, #15]
+ 8005876:	2300      	movs	r3, #0
+ 8005878:	75fb      	strb	r3, [r7, #23]
 
-	i2c_status = sendI2C( dev->i2cHandle, &status, (uint8_t*)MLX90393_REG_NOP, 1, 1 );
- 8005874:	687b      	ldr	r3, [r7, #4]
- 8005876:	6818      	ldr	r0, [r3, #0]
- 8005878:	f107 010e 	add.w	r1, r7, #14
- 800587c:	2301      	movs	r3, #1
- 800587e:	9300      	str	r3, [sp, #0]
- 8005880:	2301      	movs	r3, #1
- 8005882:	2200      	movs	r2, #0
- 8005884:	f000 f80c 	bl	80058a0 <sendI2C>
- 8005888:	4603      	mov	r3, r0
- 800588a:	73fb      	strb	r3, [r7, #15]
+	/* Constructs send buffer with Command + dataHI + dataLO + address */
+	sendBuffer[0] = MLX90393_REG_WR;
+ 800587a:	2360      	movs	r3, #96	; 0x60
+ 800587c:	743b      	strb	r3, [r7, #16]
+	sendBuffer[1] = (*data >> 8);
+ 800587e:	68bb      	ldr	r3, [r7, #8]
+ 8005880:	881b      	ldrh	r3, [r3, #0]
+ 8005882:	0a1b      	lsrs	r3, r3, #8
+ 8005884:	b29b      	uxth	r3, r3
+ 8005886:	b2db      	uxtb	r3, r3
+ 8005888:	747b      	strb	r3, [r7, #17]
+	sendBuffer[2] = (*data & 0xFF);
+ 800588a:	68bb      	ldr	r3, [r7, #8]
+ 800588c:	881b      	ldrh	r3, [r3, #0]
+ 800588e:	b2db      	uxtb	r3, r3
+ 8005890:	74bb      	strb	r3, [r7, #18]
+	sendBuffer[3] = regAddress;
+ 8005892:	79fb      	ldrb	r3, [r7, #7]
+ 8005894:	74fb      	strb	r3, [r7, #19]
+
+	i2c_status = sendI2C( dev->i2cHandle, &status, sendBuffer, WR_DATA_LENGHT, 1 );
+ 8005896:	68fb      	ldr	r3, [r7, #12]
+ 8005898:	6818      	ldr	r0, [r3, #0]
+ 800589a:	f107 0210 	add.w	r2, r7, #16
+ 800589e:	f107 0116 	add.w	r1, r7, #22
+ 80058a2:	2301      	movs	r3, #1
+ 80058a4:	9300      	str	r3, [sp, #0]
+ 80058a6:	2304      	movs	r3, #4
+ 80058a8:	f000 f828 	bl	80058fc <sendI2C>
+ 80058ac:	4603      	mov	r3, r0
+ 80058ae:	75fb      	strb	r3, [r7, #23]
 
 	/* Checks the HAL status of i2c transaction */
 	if(i2c_status != HAL_OK) return MLX90393_STATUS_ERROR;
- 800588c:	7bfb      	ldrb	r3, [r7, #15]
- 800588e:	2b00      	cmp	r3, #0
- 8005890:	d001      	beq.n	8005896 <MLX90393_NOP+0x2e>
- 8005892:	23ff      	movs	r3, #255	; 0xff
- 8005894:	e000      	b.n	8005898 <MLX90393_NOP+0x30>
+ 80058b0:	7dfb      	ldrb	r3, [r7, #23]
+ 80058b2:	2b00      	cmp	r3, #0
+ 80058b4:	d001      	beq.n	80058ba <MLX90393_WR+0x52>
+ 80058b6:	23ff      	movs	r3, #255	; 0xff
+ 80058b8:	e000      	b.n	80058bc <MLX90393_WR+0x54>
 	else{
 		return status;
- 8005896:	7bbb      	ldrb	r3, [r7, #14]
+ 80058ba:	7dbb      	ldrb	r3, [r7, #22]
 	}
 }
- 8005898:	4618      	mov	r0, r3
- 800589a:	3710      	adds	r7, #16
- 800589c:	46bd      	mov	sp, r7
- 800589e:	bd80      	pop	{r7, pc}
+ 80058bc:	4618      	mov	r0, r3
+ 80058be:	3718      	adds	r7, #24
+ 80058c0:	46bd      	mov	sp, r7
+ 80058c2:	bd80      	pop	{r7, pc}
 
-080058a0 <sendI2C>:
+080058c4 <MLX90393_RT>:
+
+
+/* Reset command, is used to reset the device, if device is runnning it will reset to idle mode */
+uint8_t MLX90393_RT	( MLX90393 *dev )
+{
+ 80058c4:	b580      	push	{r7, lr}
+ 80058c6:	b086      	sub	sp, #24
+ 80058c8:	af02      	add	r7, sp, #8
+ 80058ca:	6078      	str	r0, [r7, #4]
+	uint8_t status;
+	HAL_StatusTypeDef i2c_status = HAL_OK;
+ 80058cc:	2300      	movs	r3, #0
+ 80058ce:	73fb      	strb	r3, [r7, #15]
+
+	i2c_status = sendI2C( dev->i2cHandle, &status, (uint8_t*)MLX90393_REG_RT, 1, 1 );
+ 80058d0:	687b      	ldr	r3, [r7, #4]
+ 80058d2:	6818      	ldr	r0, [r3, #0]
+ 80058d4:	f107 010e 	add.w	r1, r7, #14
+ 80058d8:	2301      	movs	r3, #1
+ 80058da:	9300      	str	r3, [sp, #0]
+ 80058dc:	2301      	movs	r3, #1
+ 80058de:	22f0      	movs	r2, #240	; 0xf0
+ 80058e0:	f000 f80c 	bl	80058fc <sendI2C>
+ 80058e4:	4603      	mov	r3, r0
+ 80058e6:	73fb      	strb	r3, [r7, #15]
+
+	/* Checks the HAL status of i2c transaction */
+	if(i2c_status != HAL_OK) return MLX90393_STATUS_ERROR;
+ 80058e8:	7bfb      	ldrb	r3, [r7, #15]
+ 80058ea:	2b00      	cmp	r3, #0
+ 80058ec:	d001      	beq.n	80058f2 <MLX90393_RT+0x2e>
+ 80058ee:	23ff      	movs	r3, #255	; 0xff
+ 80058f0:	e000      	b.n	80058f4 <MLX90393_RT+0x30>
+	else{
+		return status;
+ 80058f2:	7bbb      	ldrb	r3, [r7, #14]
+	}
+}
+ 80058f4:	4618      	mov	r0, r3
+ 80058f6:	3710      	adds	r7, #16
+ 80058f8:	46bd      	mov	sp, r7
+ 80058fa:	bd80      	pop	{r7, pc}
+
+080058fc <sendI2C>:
+}
 
 
 /* Function that communicates with MLX90393, first sending the command and waiting for the response */
 HAL_StatusTypeDef sendI2C( I2C_HandleTypeDef *hi2c, uint8_t *receiveBuffer, uint8_t *sendBuffer, uint8_t sendMessageLength, uint8_t receiveMessageLength )
 {
- 80058a0:	b580      	push	{r7, lr}
- 80058a2:	b088      	sub	sp, #32
- 80058a4:	af02      	add	r7, sp, #8
- 80058a6:	60f8      	str	r0, [r7, #12]
- 80058a8:	60b9      	str	r1, [r7, #8]
- 80058aa:	607a      	str	r2, [r7, #4]
- 80058ac:	70fb      	strb	r3, [r7, #3]
+ 80058fc:	b580      	push	{r7, lr}
+ 80058fe:	b088      	sub	sp, #32
+ 8005900:	af02      	add	r7, sp, #8
+ 8005902:	60f8      	str	r0, [r7, #12]
+ 8005904:	60b9      	str	r1, [r7, #8]
+ 8005906:	607a      	str	r2, [r7, #4]
+ 8005908:	70fb      	strb	r3, [r7, #3]
     HAL_StatusTypeDef i2c_status = HAL_OK;
- 80058ae:	2300      	movs	r3, #0
- 80058b0:	75fb      	strb	r3, [r7, #23]
+ 800590a:	2300      	movs	r3, #0
+ 800590c:	75fb      	strb	r3, [r7, #23]
 
 	i2c_status |= HAL_I2C_Master_Transmit( hi2c, MLX90393_I2C_ADDRESS, sendBuffer, sendMessageLength, HAL_MAX_DELAY );
- 80058b2:	78fb      	ldrb	r3, [r7, #3]
- 80058b4:	b29b      	uxth	r3, r3
- 80058b6:	f04f 32ff 	mov.w	r2, #4294967295
- 80058ba:	9200      	str	r2, [sp, #0]
- 80058bc:	687a      	ldr	r2, [r7, #4]
- 80058be:	211c      	movs	r1, #28
- 80058c0:	68f8      	ldr	r0, [r7, #12]
- 80058c2:	f7fb fa9f 	bl	8000e04 <HAL_I2C_Master_Transmit>
- 80058c6:	4603      	mov	r3, r0
- 80058c8:	461a      	mov	r2, r3
- 80058ca:	7dfb      	ldrb	r3, [r7, #23]
- 80058cc:	4313      	orrs	r3, r2
- 80058ce:	75fb      	strb	r3, [r7, #23]
+ 800590e:	78fb      	ldrb	r3, [r7, #3]
+ 8005910:	b29b      	uxth	r3, r3
+ 8005912:	f04f 32ff 	mov.w	r2, #4294967295
+ 8005916:	9200      	str	r2, [sp, #0]
+ 8005918:	687a      	ldr	r2, [r7, #4]
+ 800591a:	211c      	movs	r1, #28
+ 800591c:	68f8      	ldr	r0, [r7, #12]
+ 800591e:	f7fb fa71 	bl	8000e04 <HAL_I2C_Master_Transmit>
+ 8005922:	4603      	mov	r3, r0
+ 8005924:	461a      	mov	r2, r3
+ 8005926:	7dfb      	ldrb	r3, [r7, #23]
+ 8005928:	4313      	orrs	r3, r2
+ 800592a:	75fb      	strb	r3, [r7, #23]
 	i2c_status |= HAL_I2C_Master_Receive ( hi2c, MLX90393_I2C_ADDRESS, receiveBuffer, receiveMessageLength, HAL_MAX_DELAY );
- 80058d0:	f897 3020 	ldrb.w	r3, [r7, #32]
- 80058d4:	b29b      	uxth	r3, r3
- 80058d6:	f04f 32ff 	mov.w	r2, #4294967295
- 80058da:	9200      	str	r2, [sp, #0]
- 80058dc:	68ba      	ldr	r2, [r7, #8]
- 80058de:	211c      	movs	r1, #28
- 80058e0:	68f8      	ldr	r0, [r7, #12]
- 80058e2:	f7fb fb83 	bl	8000fec <HAL_I2C_Master_Receive>
- 80058e6:	4603      	mov	r3, r0
- 80058e8:	461a      	mov	r2, r3
- 80058ea:	7dfb      	ldrb	r3, [r7, #23]
- 80058ec:	4313      	orrs	r3, r2
- 80058ee:	75fb      	strb	r3, [r7, #23]
+ 800592c:	f897 3020 	ldrb.w	r3, [r7, #32]
+ 8005930:	b29b      	uxth	r3, r3
+ 8005932:	f04f 32ff 	mov.w	r2, #4294967295
+ 8005936:	9200      	str	r2, [sp, #0]
+ 8005938:	68ba      	ldr	r2, [r7, #8]
+ 800593a:	211c      	movs	r1, #28
+ 800593c:	68f8      	ldr	r0, [r7, #12]
+ 800593e:	f7fb fb55 	bl	8000fec <HAL_I2C_Master_Receive>
+ 8005942:	4603      	mov	r3, r0
+ 8005944:	461a      	mov	r2, r3
+ 8005946:	7dfb      	ldrb	r3, [r7, #23]
+ 8005948:	4313      	orrs	r3, r2
+ 800594a:	75fb      	strb	r3, [r7, #23]
 
     return i2c_status;
- 80058f0:	7dfb      	ldrb	r3, [r7, #23]
+ 800594c:	7dfb      	ldrb	r3, [r7, #23]
 }
- 80058f2:	4618      	mov	r0, r3
- 80058f4:	3718      	adds	r7, #24
- 80058f6:	46bd      	mov	sp, r7
- 80058f8:	bd80      	pop	{r7, pc}
+ 800594e:	4618      	mov	r0, r3
+ 8005950:	3718      	adds	r7, #24
+ 8005952:	46bd      	mov	sp, r7
+ 8005954:	bd80      	pop	{r7, pc}
 
-080058fa <MLX90393_Init>:
+08005956 <MLX90393_Init>:
 
 
 /* Initialization of sensor */
 uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 {
- 80058fa:	b580      	push	{r7, lr}
- 80058fc:	b084      	sub	sp, #16
- 80058fe:	af00      	add	r7, sp, #0
- 8005900:	6078      	str	r0, [r7, #4]
- 8005902:	6039      	str	r1, [r7, #0]
+ 8005956:	b580      	push	{r7, lr}
+ 8005958:	b086      	sub	sp, #24
+ 800595a:	af00      	add	r7, sp, #0
+ 800595c:	6078      	str	r0, [r7, #4]
+ 800595e:	6039      	str	r1, [r7, #0]
 	/* Initialize structure parameters */
 	dev->i2cHandle = i2cHandle;
- 8005904:	687b      	ldr	r3, [r7, #4]
- 8005906:	683a      	ldr	r2, [r7, #0]
- 8005908:	601a      	str	r2, [r3, #0]
+ 8005960:	687b      	ldr	r3, [r7, #4]
+ 8005962:	683a      	ldr	r2, [r7, #0]
+ 8005964:	601a      	str	r2, [r3, #0]
 
 	dev->mag[0] = 0.0f;
- 800590a:	687b      	ldr	r3, [r7, #4]
- 800590c:	f04f 0200 	mov.w	r2, #0
- 8005910:	605a      	str	r2, [r3, #4]
+ 8005966:	687b      	ldr	r3, [r7, #4]
+ 8005968:	f04f 0200 	mov.w	r2, #0
+ 800596c:	605a      	str	r2, [r3, #4]
 	dev->mag[1] = 0.0f;
- 8005912:	687b      	ldr	r3, [r7, #4]
- 8005914:	f04f 0200 	mov.w	r2, #0
- 8005918:	609a      	str	r2, [r3, #8]
+ 800596e:	687b      	ldr	r3, [r7, #4]
+ 8005970:	f04f 0200 	mov.w	r2, #0
+ 8005974:	609a      	str	r2, [r3, #8]
 	dev->mag[2] = 0.0f;
- 800591a:	687b      	ldr	r3, [r7, #4]
- 800591c:	f04f 0200 	mov.w	r2, #0
- 8005920:	60da      	str	r2, [r3, #12]
+ 8005976:	687b      	ldr	r3, [r7, #4]
+ 8005978:	f04f 0200 	mov.w	r2, #0
+ 800597c:	60da      	str	r2, [r3, #12]
 
 	dev->temp_c = 0.0f;
- 8005922:	687b      	ldr	r3, [r7, #4]
- 8005924:	f04f 0200 	mov.w	r2, #0
- 8005928:	611a      	str	r2, [r3, #16]
+ 800597e:	687b      	ldr	r3, [r7, #4]
+ 8005980:	f04f 0200 	mov.w	r2, #0
+ 8005984:	611a      	str	r2, [r3, #16]
 
 	/* Performs a NOP command to get the status of the device, returns HAL status */
 	uint8_t status = 0;
- 800592a:	2300      	movs	r3, #0
- 800592c:	73fb      	strb	r3, [r7, #15]
-	status = MLX90393_NOP( dev );
- 800592e:	6878      	ldr	r0, [r7, #4]
- 8005930:	f7ff ff9a 	bl	8005868 <MLX90393_NOP>
- 8005934:	4603      	mov	r3, r0
- 8005936:	73fb      	strb	r3, [r7, #15]
+ 8005986:	2300      	movs	r3, #0
+ 8005988:	75fb      	strb	r3, [r7, #23]
+	status = MLX90393_RT( dev );
+ 800598a:	6878      	ldr	r0, [r7, #4]
+ 800598c:	f7ff ff9a 	bl	80058c4 <MLX90393_RT>
+ 8005990:	4603      	mov	r3, r0
+ 8005992:	75fb      	strb	r3, [r7, #23]
 
 	if( status == MLX90393_STATUS_ERROR ) return HAL_ERROR;
- 8005938:	7bfb      	ldrb	r3, [r7, #15]
- 800593a:	2bff      	cmp	r3, #255	; 0xff
- 800593c:	d101      	bne.n	8005942 <MLX90393_Init+0x48>
- 800593e:	2301      	movs	r3, #1
- 8005940:	e000      	b.n	8005944 <MLX90393_Init+0x4a>
-	else return HAL_OK;
- 8005942:	2300      	movs	r3, #0
+ 8005994:	7dfb      	ldrb	r3, [r7, #23]
+ 8005996:	2bff      	cmp	r3, #255	; 0xff
+ 8005998:	d101      	bne.n	800599e <MLX90393_Init+0x48>
+ 800599a:	2301      	movs	r3, #1
+ 800599c:	e040      	b.n	8005a20 <MLX90393_Init+0xca>
+		/* Configure registers,  */
+		MLX90393_CONF_1 configWord1;
+		MLX90393_CONF_2 configWord2;
+		MLX90393_CONF_3 configWord3;
+
+		configWord1.data = 0x0000;
+ 800599e:	2300      	movs	r3, #0
+ 80059a0:	823b      	strh	r3, [r7, #16]
+		configWord2.data = 0x0000;
+ 80059a2:	2300      	movs	r3, #0
+ 80059a4:	81bb      	strh	r3, [r7, #12]
+		configWord3.data = 0x0000;
+ 80059a6:	2300      	movs	r3, #0
+ 80059a8:	813b      	strh	r3, [r7, #8]
+
+		configWord1.GAINSEL = 0x07;		/* Gain Select 7 */
+ 80059aa:	7c3b      	ldrb	r3, [r7, #16]
+ 80059ac:	f043 0370 	orr.w	r3, r3, #112	; 0x70
+ 80059b0:	743b      	strb	r3, [r7, #16]
+
+		configWord3.RESX 	= 0x00; 	/* X resolution 0 */
+ 80059b2:	7a3b      	ldrb	r3, [r7, #8]
+ 80059b4:	f36f 1346 	bfc	r3, #5, #2
+ 80059b8:	723b      	strb	r3, [r7, #8]
+		configWord3.RESY 	= 0x00; 	/* Y resolution 0 */
+ 80059ba:	893b      	ldrh	r3, [r7, #8]
+ 80059bc:	f36f 13c8 	bfc	r3, #7, #2
+ 80059c0:	813b      	strh	r3, [r7, #8]
+		configWord3.RESZ 	= 0x00; 	/* Z resolution 0 */
+ 80059c2:	7a7b      	ldrb	r3, [r7, #9]
+ 80059c4:	f36f 0342 	bfc	r3, #1, #2
+ 80059c8:	727b      	strb	r3, [r7, #9]
+		configWord3.OSR 	= 0x03; 	/* OSR to 3 */
+ 80059ca:	7a3b      	ldrb	r3, [r7, #8]
+ 80059cc:	f043 0303 	orr.w	r3, r3, #3
+ 80059d0:	723b      	strb	r3, [r7, #8]
+		configWord3.DIGFIL 	= 0x07; 	/* Digital filter to 3 */
+ 80059d2:	7a3b      	ldrb	r3, [r7, #8]
+ 80059d4:	f043 031c 	orr.w	r3, r3, #28
+ 80059d8:	723b      	strb	r3, [r7, #8]
+
+
+		/* Write registers and returns status */
+		uint8_t status1 = MLX90393_WR ( dev, &configWord1.data, MLX90393_CONF1 );
+ 80059da:	f107 0310 	add.w	r3, r7, #16
+ 80059de:	2200      	movs	r2, #0
+ 80059e0:	4619      	mov	r1, r3
+ 80059e2:	6878      	ldr	r0, [r7, #4]
+ 80059e4:	f7ff ff40 	bl	8005868 <MLX90393_WR>
+ 80059e8:	4603      	mov	r3, r0
+ 80059ea:	75bb      	strb	r3, [r7, #22]
+		uint8_t status2 = MLX90393_WR ( dev, &configWord2.data, MLX90393_CONF2 );
+ 80059ec:	f107 030c 	add.w	r3, r7, #12
+ 80059f0:	2201      	movs	r2, #1
+ 80059f2:	4619      	mov	r1, r3
+ 80059f4:	6878      	ldr	r0, [r7, #4]
+ 80059f6:	f7ff ff37 	bl	8005868 <MLX90393_WR>
+ 80059fa:	4603      	mov	r3, r0
+ 80059fc:	757b      	strb	r3, [r7, #21]
+		uint8_t status3 = MLX90393_WR ( dev, &configWord3.data, MLX90393_CONF3 );
+ 80059fe:	f107 0308 	add.w	r3, r7, #8
+ 8005a02:	2202      	movs	r2, #2
+ 8005a04:	4619      	mov	r1, r3
+ 8005a06:	6878      	ldr	r0, [r7, #4]
+ 8005a08:	f7ff ff2e 	bl	8005868 <MLX90393_WR>
+ 8005a0c:	4603      	mov	r3, r0
+ 8005a0e:	753b      	strb	r3, [r7, #20]
+
+		status = status1 | status2 | status3;
+ 8005a10:	7dba      	ldrb	r2, [r7, #22]
+ 8005a12:	7d7b      	ldrb	r3, [r7, #21]
+ 8005a14:	4313      	orrs	r3, r2
+ 8005a16:	b2da      	uxtb	r2, r3
+ 8005a18:	7d3b      	ldrb	r3, [r7, #20]
+ 8005a1a:	4313      	orrs	r3, r2
+ 8005a1c:	75fb      	strb	r3, [r7, #23]
+
+		return status;
+ 8005a1e:	7dfb      	ldrb	r3, [r7, #23]
+	}
 
 }
- 8005944:	4618      	mov	r0, r3
- 8005946:	3710      	adds	r7, #16
- 8005948:	46bd      	mov	sp, r7
- 800594a:	bd80      	pop	{r7, pc}
+ 8005a20:	4618      	mov	r0, r3
+ 8005a22:	3718      	adds	r7, #24
+ 8005a24:	46bd      	mov	sp, r7
+ 8005a26:	bd80      	pop	{r7, pc}
 
-0800594c <__libc_init_array>:
- 800594c:	b570      	push	{r4, r5, r6, lr}
- 800594e:	4d0d      	ldr	r5, [pc, #52]	; (8005984 <__libc_init_array+0x38>)
- 8005950:	4c0d      	ldr	r4, [pc, #52]	; (8005988 <__libc_init_array+0x3c>)
- 8005952:	1b64      	subs	r4, r4, r5
- 8005954:	10a4      	asrs	r4, r4, #2
- 8005956:	2600      	movs	r6, #0
- 8005958:	42a6      	cmp	r6, r4
- 800595a:	d109      	bne.n	8005970 <__libc_init_array+0x24>
- 800595c:	4d0b      	ldr	r5, [pc, #44]	; (800598c <__libc_init_array+0x40>)
- 800595e:	4c0c      	ldr	r4, [pc, #48]	; (8005990 <__libc_init_array+0x44>)
- 8005960:	f000 f82e 	bl	80059c0 <_init>
- 8005964:	1b64      	subs	r4, r4, r5
- 8005966:	10a4      	asrs	r4, r4, #2
- 8005968:	2600      	movs	r6, #0
- 800596a:	42a6      	cmp	r6, r4
- 800596c:	d105      	bne.n	800597a <__libc_init_array+0x2e>
- 800596e:	bd70      	pop	{r4, r5, r6, pc}
- 8005970:	f855 3b04 	ldr.w	r3, [r5], #4
- 8005974:	4798      	blx	r3
- 8005976:	3601      	adds	r6, #1
- 8005978:	e7ee      	b.n	8005958 <__libc_init_array+0xc>
- 800597a:	f855 3b04 	ldr.w	r3, [r5], #4
- 800597e:	4798      	blx	r3
- 8005980:	3601      	adds	r6, #1
- 8005982:	e7f2      	b.n	800596a <__libc_init_array+0x1e>
- 8005984:	08005a68 	.word	0x08005a68
- 8005988:	08005a68 	.word	0x08005a68
- 800598c:	08005a68 	.word	0x08005a68
- 8005990:	08005a6c 	.word	0x08005a6c
+08005a28 <__libc_init_array>:
+ 8005a28:	b570      	push	{r4, r5, r6, lr}
+ 8005a2a:	4d0d      	ldr	r5, [pc, #52]	; (8005a60 <__libc_init_array+0x38>)
+ 8005a2c:	4c0d      	ldr	r4, [pc, #52]	; (8005a64 <__libc_init_array+0x3c>)
+ 8005a2e:	1b64      	subs	r4, r4, r5
+ 8005a30:	10a4      	asrs	r4, r4, #2
+ 8005a32:	2600      	movs	r6, #0
+ 8005a34:	42a6      	cmp	r6, r4
+ 8005a36:	d109      	bne.n	8005a4c <__libc_init_array+0x24>
+ 8005a38:	4d0b      	ldr	r5, [pc, #44]	; (8005a68 <__libc_init_array+0x40>)
+ 8005a3a:	4c0c      	ldr	r4, [pc, #48]	; (8005a6c <__libc_init_array+0x44>)
+ 8005a3c:	f000 f82e 	bl	8005a9c <_init>
+ 8005a40:	1b64      	subs	r4, r4, r5
+ 8005a42:	10a4      	asrs	r4, r4, #2
+ 8005a44:	2600      	movs	r6, #0
+ 8005a46:	42a6      	cmp	r6, r4
+ 8005a48:	d105      	bne.n	8005a56 <__libc_init_array+0x2e>
+ 8005a4a:	bd70      	pop	{r4, r5, r6, pc}
+ 8005a4c:	f855 3b04 	ldr.w	r3, [r5], #4
+ 8005a50:	4798      	blx	r3
+ 8005a52:	3601      	adds	r6, #1
+ 8005a54:	e7ee      	b.n	8005a34 <__libc_init_array+0xc>
+ 8005a56:	f855 3b04 	ldr.w	r3, [r5], #4
+ 8005a5a:	4798      	blx	r3
+ 8005a5c:	3601      	adds	r6, #1
+ 8005a5e:	e7f2      	b.n	8005a46 <__libc_init_array+0x1e>
+ 8005a60:	08005b44 	.word	0x08005b44
+ 8005a64:	08005b44 	.word	0x08005b44
+ 8005a68:	08005b44 	.word	0x08005b44
+ 8005a6c:	08005b48 	.word	0x08005b48
 
-08005994 <memcpy>:
- 8005994:	440a      	add	r2, r1
- 8005996:	4291      	cmp	r1, r2
- 8005998:	f100 33ff 	add.w	r3, r0, #4294967295
- 800599c:	d100      	bne.n	80059a0 <memcpy+0xc>
- 800599e:	4770      	bx	lr
- 80059a0:	b510      	push	{r4, lr}
- 80059a2:	f811 4b01 	ldrb.w	r4, [r1], #1
- 80059a6:	f803 4f01 	strb.w	r4, [r3, #1]!
- 80059aa:	4291      	cmp	r1, r2
- 80059ac:	d1f9      	bne.n	80059a2 <memcpy+0xe>
- 80059ae:	bd10      	pop	{r4, pc}
+08005a70 <memcpy>:
+ 8005a70:	440a      	add	r2, r1
+ 8005a72:	4291      	cmp	r1, r2
+ 8005a74:	f100 33ff 	add.w	r3, r0, #4294967295
+ 8005a78:	d100      	bne.n	8005a7c <memcpy+0xc>
+ 8005a7a:	4770      	bx	lr
+ 8005a7c:	b510      	push	{r4, lr}
+ 8005a7e:	f811 4b01 	ldrb.w	r4, [r1], #1
+ 8005a82:	f803 4f01 	strb.w	r4, [r3, #1]!
+ 8005a86:	4291      	cmp	r1, r2
+ 8005a88:	d1f9      	bne.n	8005a7e <memcpy+0xe>
+ 8005a8a:	bd10      	pop	{r4, pc}
 
-080059b0 <memset>:
- 80059b0:	4402      	add	r2, r0
- 80059b2:	4603      	mov	r3, r0
- 80059b4:	4293      	cmp	r3, r2
- 80059b6:	d100      	bne.n	80059ba <memset+0xa>
- 80059b8:	4770      	bx	lr
- 80059ba:	f803 1b01 	strb.w	r1, [r3], #1
- 80059be:	e7f9      	b.n	80059b4 <memset+0x4>
+08005a8c <memset>:
+ 8005a8c:	4402      	add	r2, r0
+ 8005a8e:	4603      	mov	r3, r0
+ 8005a90:	4293      	cmp	r3, r2
+ 8005a92:	d100      	bne.n	8005a96 <memset+0xa>
+ 8005a94:	4770      	bx	lr
+ 8005a96:	f803 1b01 	strb.w	r1, [r3], #1
+ 8005a9a:	e7f9      	b.n	8005a90 <memset+0x4>
 
-080059c0 <_init>:
- 80059c0:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 80059c2:	bf00      	nop
- 80059c4:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 80059c6:	bc08      	pop	{r3}
- 80059c8:	469e      	mov	lr, r3
- 80059ca:	4770      	bx	lr
+08005a9c <_init>:
+ 8005a9c:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8005a9e:	bf00      	nop
+ 8005aa0:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8005aa2:	bc08      	pop	{r3}
+ 8005aa4:	469e      	mov	lr, r3
+ 8005aa6:	4770      	bx	lr
 
-080059cc <_fini>:
- 80059cc:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
- 80059ce:	bf00      	nop
- 80059d0:	bcf8      	pop	{r3, r4, r5, r6, r7}
- 80059d2:	bc08      	pop	{r3}
- 80059d4:	469e      	mov	lr, r3
- 80059d6:	4770      	bx	lr
+08005aa8 <_fini>:
+ 8005aa8:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+ 8005aaa:	bf00      	nop
+ 8005aac:	bcf8      	pop	{r3, r4, r5, r6, r7}
+ 8005aae:	bc08      	pop	{r3}
+ 8005ab0:	469e      	mov	lr, r3
+ 8005ab2:	4770      	bx	lr
