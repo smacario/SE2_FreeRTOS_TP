@@ -291,6 +291,8 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 
 		configWord1.GAINSEL = 0x07;		/* Gain Select 7 */
 
+		configWord2.TRIGINT = 0x01;		/* Select pin as interrupt */
+
 		configWord3.RESX 	= 0x00; 	/* X resolution 0 */
 		configWord3.RESY 	= 0x00; 	/* Y resolution 0 */
 		configWord3.RESZ 	= 0x00; 	/* Z resolution 0 */
@@ -303,10 +305,25 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 		uint8_t status2 = MLX90393_WR ( dev, &configWord2.data, MLX90393_CONF2 );
 		uint8_t status3 = MLX90393_WR ( dev, &configWord3.data, MLX90393_CONF3 );
 
-		status = status1 | status2 | status3;
+		uint8_t status4 = MLX90393_SB ( dev, MLX90393_AXIS_ALL );
+
+
+		// sacar
+		uint8_t data[RM_DATA_LENGHT] = {0,0,0,0,0,0,0,0,0};
+		uint8_t status5 = MLX90393_RM( dev, MLX90393_AXIS_ALL, data );
+		// sacar
+
+		status = status1 | status2 | status3 | status4;
 
 		return status;
 	}
+
+}
+
+
+/* Callback to DRDY interrupt */
+void MLX90393_DRDYCallback()
+{
 
 }
 
