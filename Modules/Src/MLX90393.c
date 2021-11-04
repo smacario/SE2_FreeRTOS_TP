@@ -9,10 +9,14 @@
 
 #include "MLX90393.h"
 #include <stdint.h>
+#include "cmsis_os.h"
+#include "semphr.h"
+#include "gpio.h"
 
 /* Internal data declaration */
 
-uint8_t DRDYFlag = 0x00;		// Flags the occurrence of the DRDY interrupt from MLX90393
+SemaphoreHandle_t MagIntSemaphore;	// Handler of semaphore that blocks the sensor reading function until the DRDY interrupt arrives.
+uint8_t DRDYFlag = 0x00;			// Flags the occurrence of the DRDY interrupt from MLX90393.
 
 /* Internal function declaration */
 
@@ -293,6 +297,13 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 		uint8_t status2 = MLX90393_WR ( dev, &configWord2.data, MLX90393_CONF2 );
 		uint8_t status3 = MLX90393_WR ( dev, &configWord3.data, MLX90393_CONF3 );
 
+		/* Initializes Semaphore and enables interrupts*/
+		MagIntSemaphore = xSemaphoreCreateBinary();
+		enableIRQ();
+
+		/* Starts burst mode, and inmediatly takes semaphore */
+		MLX90393_SB( dev, MLX90393_AXIS_ALL );
+		xSemaphoreTake( MagIntSemaphore, portMAX_DELAY );
 
 		status = status1 | status2 | status3;
 
@@ -301,10 +312,46 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 
 }
 
+/*
+ * This function reads the magnetic field in the x, y and z axis.
+ * The data is output in the following order: T (MSB), T (LSB), X (MSB), X (LSB), Y (MSB), Y (LSB), Z (MSB), Z (LSB)
+ *
+ */
+uint8_t MLX90393_ReadMeasurementAxisAll( MLX90393 *dev, uint16_t *XmagRead, uint16_t *YmagRead, uint16_t *ZmagRead )
+{
+	uint8_t readStatus;
+	uint8_t dataBuffer[RM_DATA_LENGHT] = { 0x00 };
+
+	/* Takes Semaphore */
+
+
+	/* Reads data from MLX90393 device in all axis */
+	readStatus = MLX90393_RM( dev, MLX90393_AXIS_ALL, dataBuffer );
+
+	*XmagRead = ( dataBuffer[6] << 8 ) | dataBuffer[5];
+	*YmagRead = ( dataBuffer[4] << 8 ) | dataBuffer[3];
+	*ZmagRead = ( dataBuffer[2] << 8 ) | dataBuffer[1];
+
+	/* Clears the DRDY flag and takes semaphore*/
+	DRDYFlag = 0x00;
+	xSemaphoreTake( MagIntSemaphore, portMAX_DELAY );
+
+	return readStatus;
+}
+
 
 /* Callback to DRDY interrupt */
 void MLX90393_DRDYCallback( void )
 {
-	DRDYFlag = 0x01;
+	/* Gives semaphore and yields */
+
+	if(DRDYFlag == 0x00)
+	{
+		BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+		xSemaphoreGiveFromISR( MagIntSemaphore, &xHigherPriorityTaskWoken );
+		portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
+
+		DRDYFlag = 0x01;
+	}
 }
 
