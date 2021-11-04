@@ -87,12 +87,21 @@ void taskLED ( void *pvParameters )
 
 void taskSensor ( void *pvParameters )
 {
+	uint16_t magX, magY, magZ;
+	HAL_StatusTypeDef i2cStatus = HAL_OK;
+
+	/* Initializes sensors */
+	i2cStatus |= IIM42652_Init(&IMU, &hi2c2);
+	i2cStatus |= MLX90393_Init(&MAG, &hi2c2);
+
+	if(i2cStatus == HAL_ERROR)
+	{
+		/* Error */
+	}
 
 	while(1)
 	{
-		vTaskDelay(500 / portTICK_PERIOD_MS);
-
-
+		MLX90393_ReadMeasurementAxisAll( &MAG, &magX, &magY, &magZ );
 	}
 }
 
@@ -138,13 +147,6 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
-
-  HAL_StatusTypeDef i2cStatus = HAL_OK;
-
-  i2cStatus |= IIM42652_Init(&IMU, &hi2c2);
-  i2cStatus |= MLX90393_Init(&MAG, &hi2c2);
-
-  if(i2cStatus == HAL_ERROR);
 
   /* USER CODE END 2 */
 
