@@ -72,12 +72,15 @@ void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 2 */
+
+/* Redefined _weak system callback */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 
 	if(GPIO_Pin == INT_MAG_Pin)
 	{
 		// Execute callback here
+		MLX90393_DRDYCallback();
 	}
 }
 /* USER CODE END 2 */
