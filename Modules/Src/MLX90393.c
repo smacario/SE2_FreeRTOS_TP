@@ -10,25 +10,25 @@
 #include "MLX90393.h"
 #include <stdint.h>
 
+/* Internal data declaration */
 
+uint8_t DRDYFlag = 0x00;		// Flags the occurrence of the DRDY interrupt from MLX90393
 
-HAL_StatusTypeDef MLX90393_ReadRegisterWord( MLX90393 *dev, uint8_t reg, uint8_t *data )
+/* Internal function declaration */
+
+/* Function that communicates with MLX90393, first sending the command and waiting for the response */
+HAL_StatusTypeDef sendI2C( I2C_HandleTypeDef *hi2c, uint8_t *receiveBuffer, uint8_t *sendBuffer, uint8_t sendMessageLength, uint8_t receiveMessageLength )
 {
-	return HAL_I2C_Mem_Read( dev->i2cHandle, MLX90393_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 2, HAL_MAX_DELAY );
+    HAL_StatusTypeDef i2c_status = HAL_OK;
+
+	i2c_status |= HAL_I2C_Master_Transmit( hi2c, MLX90393_I2C_ADDRESS, sendBuffer, sendMessageLength, HAL_MAX_DELAY );
+	i2c_status |= HAL_I2C_Master_Receive ( hi2c, MLX90393_I2C_ADDRESS, receiveBuffer, receiveMessageLength, HAL_MAX_DELAY );
+
+    return i2c_status;
 }
 
 
-HAL_StatusTypeDef MLX90393_ReadMultipleRegisters( MLX90393 *dev, uint8_t reg, uint8_t *data, uint8_t length )
-{
-	return HAL_I2C_Mem_Read( dev->i2cHandle, MLX90393_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, length, HAL_MAX_DELAY );
-}
-
-
-HAL_StatusTypeDef MLX90393_WriteRegister( MLX90393 *dev, uint8_t reg, uint8_t *data )
-{
-	return HAL_I2C_Mem_Write( dev->i2cHandle, MLX90393_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY );
-}
-
+/* External function declaration */
 
 /* EXit command, returns the status */
 uint8_t MLX90393_EX	( MLX90393 *dev)
@@ -249,18 +249,6 @@ uint8_t MLX90393_NOP ( MLX90393 *dev )
 }
 
 
-/* Function that communicates with MLX90393, first sending the command and waiting for the response */
-HAL_StatusTypeDef sendI2C( I2C_HandleTypeDef *hi2c, uint8_t *receiveBuffer, uint8_t *sendBuffer, uint8_t sendMessageLength, uint8_t receiveMessageLength )
-{
-    HAL_StatusTypeDef i2c_status = HAL_OK;
-
-	i2c_status |= HAL_I2C_Master_Transmit( hi2c, MLX90393_I2C_ADDRESS, sendBuffer, sendMessageLength, HAL_MAX_DELAY );
-	i2c_status |= HAL_I2C_Master_Receive ( hi2c, MLX90393_I2C_ADDRESS, receiveBuffer, receiveMessageLength, HAL_MAX_DELAY );
-
-    return i2c_status;
-}
-
-
 /* Initialization of sensor */
 uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 {
@@ -305,15 +293,8 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 		uint8_t status2 = MLX90393_WR ( dev, &configWord2.data, MLX90393_CONF2 );
 		uint8_t status3 = MLX90393_WR ( dev, &configWord3.data, MLX90393_CONF3 );
 
-		uint8_t status4 = MLX90393_SB ( dev, MLX90393_AXIS_ALL );
 
-
-		// sacar
-		uint8_t data[RM_DATA_LENGHT] = {0,0,0,0,0,0,0,0,0};
-		uint8_t status5 = MLX90393_RM( dev, MLX90393_AXIS_ALL, data );
-		// sacar
-
-		status = status1 | status2 | status3 | status4;
+		status = status1 | status2 | status3;
 
 		return status;
 	}
@@ -322,8 +303,8 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 
 
 /* Callback to DRDY interrupt */
-void MLX90393_DRDYCallback()
+void MLX90393_DRDYCallback( void )
 {
-
+	DRDYFlag = 0x01;
 }
 
