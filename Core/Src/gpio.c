@@ -67,11 +67,18 @@ void MX_GPIO_Init(void)
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+  //HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
 }
 
 /* USER CODE BEGIN 2 */
+
+
+void enableIRQ( void )
+{
+	HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
+}
+
 
 /* Redefined _weak system callback */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
