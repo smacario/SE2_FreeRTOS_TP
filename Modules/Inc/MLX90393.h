@@ -151,6 +151,7 @@ HAL_StatusTypeDef MLX90393_ReadMultipleRegisters( MLX90393 *dev, uint8_t reg, ui
 
 HAL_StatusTypeDef MLX90393_WriteRegister( MLX90393 *dev, uint8_t reg, uint8_t *data );
 
+void MLX90393_DRDYCallback( void );
 
 /* Command function prototypes */
 
@@ -165,6 +166,8 @@ uint8_t MLX90393_RT		( MLX90393 *dev );
 uint8_t MLX90393_HR		( MLX90393 *dev );
 uint8_t MLX90393_HS		( MLX90393 *dev );
 uint8_t MLX90393_NOP	( MLX90393 *dev );
+
+
 
 
 #endif /* INC_MLX90393_H_ */
