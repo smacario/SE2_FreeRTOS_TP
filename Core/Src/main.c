@@ -49,6 +49,9 @@
 IIM42652 IMU;
 MLX90393 MAG;
 
+TaskHandle_t taskLED_Handler 	= NULL;
+TaskHandle_t taskSensor_Handler = NULL;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -61,12 +64,13 @@ void MX_FREERTOS_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void task(void *pvParameters){
+void taskLED ( void *pvParameters )
+{
 
 	static uint32_t pin_state = 0;
 
-	while(1){
-
+	while(1)
+	{
 		vTaskDelay(150 / portTICK_PERIOD_MS);
 
 		pin_state = !pin_state;
@@ -79,6 +83,19 @@ void task(void *pvParameters){
 
 	}
 }
+
+
+void taskSensor ( void *pvParameters )
+{
+
+	while(1)
+	{
+		vTaskDelay(500 / portTICK_PERIOD_MS);
+
+
+	}
+}
+
 
 /* USER CODE END 0 */
 
@@ -98,6 +115,15 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
+
+  /* Initialize tasks */
+  BaseType_t xReturnLED  = xTaskCreate ( taskLED, "t_LED", 100, NULL, 2, &taskLED_Handler );
+  BaseType_t xReturnSENS = xTaskCreate ( taskSensor, "t_SENS", 100, NULL, 3, &taskSensor_Handler );
+
+  if( ( xReturnLED | xReturnSENS ) == pdFALSE )
+  {
+	  /* Error condition */
+  }
 
   /* USER CODE END Init */
 
@@ -137,6 +163,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
   }
+
   /* USER CODE END 3 */
 }
 
