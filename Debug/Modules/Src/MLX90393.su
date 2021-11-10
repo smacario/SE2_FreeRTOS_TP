@@ -12,4 +12,4 @@ MLX90393.c:224:9:MLX90393_HS	32	static
 MLX90393.c:241:9:MLX90393_NOP	32	static
 MLX90393.c:257:9:MLX90393_Init	32	static
 MLX90393.c:320:9:MLX90393_ReadMeasurementAxisAll	40	static
-MLX90393.c:344:6:MLX90393_DRDYCallback	16	static,ignoring_inline_asm
+MLX90393.c:341:6:MLX90393_DRDYCallback	16	static,ignoring_inline_asm
