@@ -65,6 +65,9 @@ void Error_Handler(void);
 #define INT_MAG_Pin GPIO_PIN_15
 #define INT_MAG_GPIO_Port GPIOB
 #define INT_MAG_EXTI_IRQn EXTI15_10_IRQn
+#define INT_IMU_Pin GPIO_PIN_12
+#define INT_IMU_GPIO_Port GPIOA
+#define INT_IMU_EXTI_IRQn EXTI15_10_IRQn
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
