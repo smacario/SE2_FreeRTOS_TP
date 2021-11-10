@@ -140,6 +140,103 @@
 #define OFFSET_USER8_ADD		(0x7F)
 
 
+/* Register configuration macros */
+#define IIM42652_SET_TEMPERATURE_ENABLED                 0xDF
+#define IIM42652_SET_TEMPERATURE_DISABLED                0x20
+
+#define IIM42652_SET_GYRO_OFF_MODE                       0x00
+#define IIM42652_SET_GYRO_STANDBY_MODE                   0x04
+#define IIM42652_SET_GYRO_TLOW_NOISE_MODE                0x0C
+
+#define IIM42652_SET_ACCEL_OFF_MODE                      0x00
+#define IIM42652_SET_ACCEL_LOW_POWER_MODE                0x02
+#define IIM42652_SET_ACCEL_LOW_NOISE_MODE                0x03
+
+#define IIM42652_SET_GYRO_FS_SEL_2000_dps                0x00
+#define IIM42652_SET_GYRO_FS_SEL_1000_dps                0x01
+#define IIM42652_SET_GYRO_FS_SEL_500_dps                 0x02
+#define IIM42652_SET_GYRO_FS_SEL_250_dps                 0x03
+#define IIM42652_SET_GYRO_FS_SEL_125_dps                 0x04
+#define IIM42652_SET_GYRO_FS_SEL_62_5_dps                0x05
+#define IIM42652_SET_GYRO_FS_SEL_31_25_dps               0x06
+#define IIM42652_SET_GYRO_FS_SEL_16_625_dps              0x07
+
+#define IIM42652_SET_GYRO_ODR_32kHz                      0x01
+#define IIM42652_SET_GYRO_ODR_16kHz                      0x02
+#define IIM42652_SET_GYRO_ODR_8kHz                       0x03
+#define IIM42652_SET_GYRO_ODR_4kHz                       0x04
+#define IIM42652_SET_GYRO_ODR_2kHz                       0x05
+#define IIM42652_SET_GYRO_ODR_1kHz                       0x06
+#define IIM42652_SET_GYRO_ODR_200Hz                      0x07
+#define IIM42652_SET_GYRO_ODR_100Hz                      0x08
+#define IIM42652_SET_GYRO_ODR_50Hz                       0x09
+#define IIM42652_SET_GYRO_ODR_25Hz                       0x0A
+#define IIM42652_SET_GYRO_ODR_12_5Hz                     0x0B
+
+#define IIM42652_SET_GYRO_UI_FILT_ORD_1st                0x00
+#define IIM42652_SET_GYRO_UI_FILT_ORD_2st                0x01
+#define IIM42652_SET_GYRO_UI_FILT_ORD_3st                0x02
+
+#define IIM42652_SET_GYRO_DEC2_M2_ORD_3st                0x02
+
+#define IIM42652_SET_GYRO_UI_FILT_BW_ODR_2               0x00
+#define IIM42652_SET_GYRO_UI_FILT_BW_ODR_4               0x01
+#define IIM42652_SET_GYRO_UI_FILT_BW_ODR_5               0x02
+#define IIM42652_SET_GYRO_UI_FILT_BW_ODR_8               0x03
+#define IIM42652_SET_GYRO_UI_FILT_BW_ODR_10              0x04
+#define IIM42652_SET_GYRO_UI_FILT_BW_ODR_16              0x05
+#define IIM42652_SET_GYRO_UI_FILT_BW_ODR_20              0x06
+#define IIM42652_SET_GYRO_UI_FILT_BW_ODR_40              0x07
+#define IIM42652_SET_GYRO_UI_FILT_BW_LOW_LATENCY_0       0x0E
+#define IIM42652_SET_GYRO_UI_FILT_BW_LOW_LATENCY_1       0x0F
+
+#define IIM42652_SET_ACCEL_FS_SEL_16g                    0x00
+#define IIM42652_SET_ACCEL_FS_SEL_8g                     0x01
+#define IIM42652_SET_ACCEL_FS_SEL_4g                     0x02
+#define IIM42652_SET_ACCEL_FS_SEL_2g                     0x03
+
+#define IIM42652_SET_ACCEL_ODR_32kHz                     0x01
+#define IIM42652_SET_ACCEL_ODR_16kHz                     0x02
+#define IIM42652_SET_ACCEL_ODR_8kHz                      0x03
+#define IIM42652_SET_ACCEL_ODR_4kHz                      0x04
+#define IIM42652_SET_ACCEL_ODR_2kHz                      0x05
+#define IIM42652_SET_ACCEL_ODR_1kHz                      0x06
+#define IIM42652_SET_ACCEL_ODR_200Hz                     0x07
+#define IIM42652_SET_ACCEL_ODR_100Hz                     0x08
+#define IIM42652_SET_ACCEL_ODR_50Hz                      0x09
+#define IIM42652_SET_ACCEL_ODR_25Hz                      0x0A
+#define IIM42652_SET_ACCEL_ODR_12_5Hz                    0x0B
+
+#define IIM42652_SET_ACCEL_UI_FILT_BW_ODR_2              0x00
+#define IIM42652_SET_ACCEL_UI_FILT_BW_ODR_4              0x01
+#define IIM42652_SET_ACCEL_UI_FILT_BW_ODR_5              0x02
+#define IIM42652_SET_ACCEL_UI_FILT_BW_ODR_8              0x03
+#define IIM42652_SET_ACCEL_UI_FILT_BW_ODR_10             0x04
+#define IIM42652_SET_ACCEL_UI_FILT_BW_ODR_16             0x05
+#define IIM42652_SET_ACCEL_UI_FILT_BW_ODR_20             0x06
+#define IIM42652_SET_ACCEL_UI_FILT_BW_ODR_40             0x07
+#define IIM42652_SET_ACCEL_UI_FILT_BW_LOW_LATENCY_0      0x0E
+#define IIM42652_SET_ACCEL_UI_FILT_BW_LOW_LATENCY_1      0x0F
+
+#define IIM42652_SET_ACCEL_UI_FILT_ORD_1st               0x00
+#define IIM42652_SET_ACCEL_UI_FILT_ORD_2st               0x01
+#define IIM42652_SET_ACCEL_UI_FILT_ORD_3st               0x02
+
+#define IIM42652_SET_ACCEL_DEC2_M2_ORD_3st               0x02
+
+#define IIM42652_SET_BANK_0                              0x00
+#define IIM42652_SET_BANK_1                              0x01
+#define IIM42652_SET_BANK_2                              0x02
+#define IIM42652_SET_BANK_3                              0x03
+#define IIM42652_SET_BANK_4                              0x04
+
+#define IIM42654_SET_INT1						         0x04
+#define IIM42652_SET_INT_ACTIVE_HI						 0x01
+#define IIM42652_SET_UI_DRDY_INT_CLEAR					 0x20
+#define IIM42652_SET_UI_DRDY_INT1_EN					 0x08
+
+
+
 /* Sensor struct
  *
  * 	Stores the accelerometer, gyroscope, and temperature data
@@ -156,6 +253,29 @@ typedef struct {
 }IIM42652;
 
 
+typedef struct
+{
+    uint8_t gyro_fs_sel;
+    uint8_t gyro_odr;
+    uint8_t gyro_ui_filt_ord;
+    uint8_t gyro_dec2_m2_ord;
+    uint8_t gyro_ui_filt_bw;
+
+} IIM42652_GYRO_CFG_t;
+
+
+
+typedef struct
+{
+    uint8_t accel_fs_sel;
+    uint8_t accel_odr;
+    uint8_t accel_ui_filt_bw;
+    uint8_t accel_ui_filt_ord;
+    uint8_t accel_dec2_m2_ord;
+
+} IIM42652_ACCL_CFG_t;
+
+
 
 /* Function prototypes */
 
@@ -164,6 +284,13 @@ uint8_t IIM42652_Init( IIM42652 *dev, I2C_HandleTypeDef *i2cHandle );
 HAL_StatusTypeDef IIM42652_ReadAcc( IIM42652 *dev );
 HAL_StatusTypeDef IIM42652_ReadGyr( IIM42652 *dev );
 HAL_StatusTypeDef IIM42652_ReadTmp( IIM42652 *dev );
+
+HAL_StatusTypeDef IIM42652_SoftReset( IIM42652 *dev );
+HAL_StatusTypeDef IIM42652_EnableGyro( IIM42652 *dev );
+HAL_StatusTypeDef IIM42652_EnableAccel( IIM42652 *dev );
+HAL_StatusTypeDef IIM42652_setConfigGyro( IIM42652 *dev, IIM42652_GYRO_CFG_t gyrCfg );
+HAL_StatusTypeDef IIM42652_setConfigAccel( IIM42652 *dev, IIM42652_ACCL_CFG_t accCfg );
+HAL_StatusTypeDef IIM42652_ConfigInterrupt( IIM42652 *dev );
 
 HAL_StatusTypeDef IIM42652_ReadRegister( IIM42652 *dev, uint8_t reg, uint8_t *data );
 HAL_StatusTypeDef IIM42652_ReadMultipleRegisters( IIM42652 *dev, uint8_t reg, uint8_t *data, uint8_t length );
