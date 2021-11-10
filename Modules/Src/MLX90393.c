@@ -281,15 +281,15 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 		configWord2.data = 0x0000;
 		configWord3.data = 0x0000;
 
-		configWord1.GAINSEL = 0x07;		/* Gain Select 7 */
+		configWord1.GAINSEL = 0x03;		/* Gain Select 3 */
 
 		configWord2.TRIGINT = 0x01;		/* Select pin as interrupt */
 
-		configWord3.RESX 	= 0x00; 	/* X resolution 0 */
-		configWord3.RESY 	= 0x00; 	/* Y resolution 0 */
-		configWord3.RESZ 	= 0x00; 	/* Z resolution 0 */
-		configWord3.OSR 	= 0x03; 	/* OSR to 3 */
-		configWord3.DIGFIL 	= 0x07; 	/* Digital filter to 3 */
+		configWord3.RESX 	= 0x03; 	/* X resolution 19 */
+		configWord3.RESY 	= 0x03; 	/* Y resolution 19 */
+		configWord3.RESZ 	= 0x00; 	/* Z resolution 16 */
+		configWord3.OSR 	= 0x02; 	/* OSR to 2 */
+		configWord3.DIGFIL 	= 0x06; 	/* Digital filter to 6 */
 
 
 		/* Write registers and returns status */
@@ -322,15 +322,12 @@ uint8_t MLX90393_ReadMeasurementAxisAll( MLX90393 *dev, uint16_t *XmagRead, uint
 	uint8_t readStatus;
 	uint8_t dataBuffer[RM_DATA_LENGHT] = { 0x00 };
 
-	/* Takes Semaphore */
-
-
 	/* Reads data from MLX90393 device in all axis */
-	readStatus = MLX90393_RM( dev, MLX90393_AXIS_ALL, dataBuffer );
+	readStatus = MLX90393_RM( dev, 0x08, dataBuffer );
 
-	*XmagRead = ( dataBuffer[6] << 8 ) | dataBuffer[5];
+	*XmagRead = ( dataBuffer[2] << 8 ) | dataBuffer[1];
 	*YmagRead = ( dataBuffer[4] << 8 ) | dataBuffer[3];
-	*ZmagRead = ( dataBuffer[2] << 8 ) | dataBuffer[1];
+	*ZmagRead = ( dataBuffer[6] << 8 ) | dataBuffer[5];
 
 	/* Clears the DRDY flag and takes semaphore*/
 	DRDYFlag = 0x00;
@@ -354,4 +351,3 @@ void MLX90393_DRDYCallback( void )
 		DRDYFlag = 0x01;
 	}
 }
-
