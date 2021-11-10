@@ -86,6 +86,13 @@ enum {
 };
 
 
+typedef enum {
+	xAxis = 0x00,
+	yAxis,
+	zAxis,
+}axis;
+
+
 /* MLX90393_CONFIG_1_ADD register */
 typedef union
 {
