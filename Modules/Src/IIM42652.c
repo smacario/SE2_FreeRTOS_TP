@@ -61,7 +61,7 @@ HAL_StatusTypeDef IIM42652_SoftReset( IIM42652 *dev )
 	status |= IIM42652_WriteRegister( dev, DEVICE_CONFIG_ADD, &config );
 
 	/* Waits for reset */
-	vTaskDelay( 5000 / portTICK_PERIOD_MS );
+	vTaskDelay( 5 / portTICK_PERIOD_MS );
 
 	return status;
 }
@@ -82,7 +82,7 @@ HAL_StatusTypeDef IIM42652_EnableGyro( IIM42652 *dev )
 	status |= IIM42652_WriteRegister( dev, PWR_MGMT0_ADD, &config );
 
 	/* Waits for gyroscope power on */
-	vTaskDelay( 5000 / portTICK_PERIOD_MS );
+	vTaskDelay( 5 / portTICK_PERIOD_MS );
 
 	return status;
 }
@@ -103,7 +103,7 @@ HAL_StatusTypeDef IIM42652_EnableAccel( IIM42652 *dev )
 	status |= IIM42652_WriteRegister( dev, PWR_MGMT0_ADD, &config );
 
 	/* Waits for accelerometer power on */
-	vTaskDelay( 5000 / portTICK_PERIOD_MS );
+	vTaskDelay( 5 / portTICK_PERIOD_MS );
 
 	return status;
 }
@@ -167,6 +167,7 @@ HAL_StatusTypeDef IIM42652_setConfigAccel( IIM42652 *dev, IIM42652_ACCL_CFG_t ac
 }
 
 
+/* Configure interrupt parameters */
 HAL_StatusTypeDef IIM42652_ConfigInterrupt( IIM42652 *dev )
 {
 	uint8_t config = 0x00;
@@ -221,28 +222,27 @@ uint8_t IIM42652_Init( IIM42652 *dev, I2C_HandleTypeDef *i2cHandle )
 
 		/* Initialize routine */
 		status |= IIM42652_SoftReset  ( dev );
+	    status |= IIM42652_ConfigInterrupt( dev );
 		status |= IIM42652_EnableGyro ( dev );
 		status |= IIM42652_EnableAccel( dev );
 
 
-		GYR_CFG.gyro_fs_sel      = IIM42652_SET_GYRO_FS_SEL_2000_dps;
-		GYR_CFG.gyro_odr         = IIM42652_SET_GYRO_ODR_1kHz;
+		GYR_CFG.gyro_fs_sel      = IIM42652_SET_GYRO_FS_SEL_500_dps;
+		GYR_CFG.gyro_odr         = IIM42652_SET_GYRO_ODR_50Hz;
 		GYR_CFG.gyro_ui_filt_ord = IIM42652_SET_GYRO_UI_FILT_ORD_2st;
 		GYR_CFG.gyro_dec2_m2_ord = IIM42652_SET_GYRO_DEC2_M2_ORD_3st;
 		GYR_CFG.gyro_ui_filt_bw  = IIM42652_SET_GYRO_UI_FILT_BW_ODR_4;
 	    IIM42652_setConfigGyro( dev, GYR_CFG );
 
-	    ACC_CFG.accel_fs_sel      = IIM42652_SET_ACCEL_FS_SEL_16g;
-	    ACC_CFG.accel_odr         = IIM42652_SET_ACCEL_ODR_1kHz;
+	    ACC_CFG.accel_fs_sel      = IIM42652_SET_ACCEL_FS_SEL_8g;
+	    ACC_CFG.accel_odr         = IIM42652_SET_ACCEL_ODR_50Hz;
 	    ACC_CFG.accel_ui_filt_bw  = IIM42652_SET_ACCEL_UI_FILT_BW_ODR_4;
 	    ACC_CFG.accel_ui_filt_ord = IIM42652_SET_ACCEL_UI_FILT_ORD_2st;
 	    ACC_CFG.accel_dec2_m2_ord = IIM42652_SET_ACCEL_DEC2_M2_ORD_3st;
 	    IIM42652_setConfigAccel( dev, ACC_CFG );
 
-	    IIM42652_ConfigInterrupt( dev );
-
-	    /* Takes semaphore until DRDY is ready */
-	    xSemaphoreTake( ImuIntSemaphore, portMAX_DELAY );
+	    /* Initializes semaphore */
+	    ImuIntSemaphore = xSemaphoreCreateBinary();
 	}
 
 
@@ -255,6 +255,16 @@ HAL_StatusTypeDef IIM42652_ReadMeasurementAxisAll( IIM42652 *dev )
 {
 
 	HAL_StatusTypeDef readStatus;
+	uint8_t rxBuffer[6];
+	uint16_t xAccRead, yAccRead, zAccRead;
+
+
+	readStatus = IIM42652_ReadMultipleRegisters( dev, ACCL_DATA_XHI_ADD, rxBuffer, 6 );
+
+	xAccRead = (rxBuffer[0] << 8) | rxBuffer[1];
+	yAccRead = (rxBuffer[2] << 8) | rxBuffer[3];
+	zAccRead = (rxBuffer[4] << 8) | rxBuffer[5];
+
 
 	/* Takes semaphore until DRDY is ready again */
 	xSemaphoreTake( ImuIntSemaphore, portMAX_DELAY );
