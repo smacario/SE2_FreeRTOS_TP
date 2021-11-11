@@ -6,7 +6,7 @@ IIM42652.c:71:19:IIM42652_EnableGyro	24	static
 IIM42652.c:92:19:IIM42652_EnableAccel	24	static
 IIM42652.c:113:19:IIM42652_setConfigGyro	32	static
 IIM42652.c:143:19:IIM42652_setConfigAccel	32	static
-IIM42652.c:170:19:IIM42652_ConfigInterrupt	24	static
-IIM42652.c:189:9:IIM42652_Init	40	static
-IIM42652.c:254:19:IIM42652_ReadMeasurementAxisAll	24	static
-IIM42652.c:267:6:IIM42652_DRDYCallback	16	static,ignoring_inline_asm
+IIM42652.c:171:19:IIM42652_ConfigInterrupt	24	static
+IIM42652.c:190:9:IIM42652_Init	40	static
+IIM42652.c:254:19:IIM42652_ReadMeasurementAxisAll	32	static
+IIM42652.c:277:6:IIM42652_DRDYCallback	16	static,ignoring_inline_asm
