@@ -50,7 +50,8 @@ IIM42652 IMU;
 MLX90393 MAG;
 
 TaskHandle_t taskLED_Handler 	= NULL;
-TaskHandle_t taskSensor_Handler = NULL;
+TaskHandle_t taskMAG_Handler 	= NULL;
+TaskHandle_t tasIMU_Handler 	= NULL;
 
 /* USER CODE END PV */
 
@@ -64,11 +65,50 @@ void MX_FREERTOS_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-/* Task for blinking LED  */
+
+void taskSensorMAG ( void *pvParameters )
+{
+	uint16_t magX, magY, magZ;
+
+	while(1)
+	{
+		MLX90393_ReadMeasurementAxisAll( &MAG, &magX, &magY, &magZ );
+	}
+}
+
+
+void taskSensorIMU ( void *pvParameters )
+{
+
+	while(1)
+	{
+		IIM42652_ReadMeasurementAxisAll( &IMU );
+	}
+}
+
+
+/* Task for blinking LED and sensor task initialization  */
 void taskLED ( void *pvParameters )
 {
 
 	static uint32_t pin_state = 0;
+	HAL_StatusTypeDef i2cStatus = HAL_OK;
+
+
+	/* This section initializes sensors and sensors tasks */
+
+	i2cStatus |= IIM42652_Init(&IMU, &hi2c2);
+	i2cStatus |= MLX90393_Init(&MAG, &hi2c2);
+
+	if(i2cStatus == HAL_ERROR)  { /* Error condition */ }
+
+	enableIRQ();
+
+	BaseType_t xReturnIMU = xTaskCreate ( taskSensorIMU, "IMU", 100, NULL, 3, &tasIMU_Handler );
+	BaseType_t xReturnMAG = xTaskCreate ( taskSensorMAG, "MAG", 100, NULL, 3, &taskMAG_Handler );
+
+	if( ( xReturnIMU | xReturnMAG ) == pdFALSE )  { /* Error condition */ }
+
 
 	while(1)
 	{
@@ -82,27 +122,6 @@ void taskLED ( void *pvParameters )
 		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, !pin_state);
 		HAL_Delay(50);
 
-	}
-}
-
-
-void taskSensor ( void *pvParameters )
-{
-	uint16_t magX, magY, magZ;
-	HAL_StatusTypeDef i2cStatus = HAL_OK;
-
-	/* Initializes sensors */
-	i2cStatus |= IIM42652_Init(&IMU, &hi2c2);
-	i2cStatus |= MLX90393_Init(&MAG, &hi2c2);
-
-	if(i2cStatus == HAL_ERROR)
-	{
-		/* Error */
-	}
-
-	while(1)
-	{
-		MLX90393_ReadMeasurementAxisAll( &MAG, &magX, &magY, &magZ );
 	}
 }
 
@@ -126,14 +145,11 @@ int main(void)
 
   /* USER CODE BEGIN Init */
 
-  /* Initialize tasks */
+  /* Initialize init task */
   BaseType_t xReturnLED  = xTaskCreate ( taskLED, "t_LED", 100, NULL, 2, &taskLED_Handler );
-  BaseType_t xReturnSENS = xTaskCreate ( taskSensor, "t_SENS", 100, NULL, 3, &taskSensor_Handler );
 
-  if( ( xReturnLED | xReturnSENS ) == pdFALSE )
-  {
-	  /* Error condition */
-  }
+  if( ( xReturnLED ) == pdFALSE ) { /* Error condition */ }
+
 
   /* USER CODE END Init */
 
