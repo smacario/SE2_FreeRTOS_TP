@@ -292,6 +292,8 @@ HAL_StatusTypeDef IIM42652_setConfigGyro( IIM42652 *dev, IIM42652_GYRO_CFG_t gyr
 HAL_StatusTypeDef IIM42652_setConfigAccel( IIM42652 *dev, IIM42652_ACCL_CFG_t accCfg );
 HAL_StatusTypeDef IIM42652_ConfigInterrupt( IIM42652 *dev );
 
+HAL_StatusTypeDef IIM42652_ReadMeasurementAxisAll( IIM42652 *dev );
+
 HAL_StatusTypeDef IIM42652_ReadRegister( IIM42652 *dev, uint8_t reg, uint8_t *data );
 HAL_StatusTypeDef IIM42652_ReadMultipleRegisters( IIM42652 *dev, uint8_t reg, uint8_t *data, uint8_t length );
 
