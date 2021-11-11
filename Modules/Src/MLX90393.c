@@ -288,8 +288,9 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 		configWord3.RESX 	= 0x03; 	/* X resolution 19 */
 		configWord3.RESY 	= 0x03; 	/* Y resolution 19 */
 		configWord3.RESZ 	= 0x00; 	/* Z resolution 16 */
-		configWord3.OSR 	= 0x02; 	/* OSR to 2 */
-		configWord3.DIGFIL 	= 0x06; 	/* Digital filter to 6 */
+		configWord3.OSR 	= 0x03; 	/* OSR to 3 */
+		configWord3.OSR2	= 0x01;		/* OSR2 to 1 */
+		configWord3.DIGFIL 	= 0x06; 	/* Digital filter to 7 */
 
 
 		/* Write registers and returns status */
@@ -297,13 +298,11 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 		uint8_t status2 = MLX90393_WR ( dev, &configWord2.data, MLX90393_CONF2 );
 		uint8_t status3 = MLX90393_WR ( dev, &configWord3.data, MLX90393_CONF3 );
 
-		/* Initializes Semaphore and enables interrupts*/
+		/* Initializes Semaphore*/
 		MagIntSemaphore = xSemaphoreCreateBinary();
-		enableIRQ();
 
-		/* Starts burst mode, and inmediatly takes semaphore */
+		/* Starts burst mode */
 		MLX90393_SB( dev, MLX90393_AXIS_ALL );
-		xSemaphoreTake( MagIntSemaphore, portMAX_DELAY );
 
 		status = status1 | status2 | status3;
 
@@ -323,7 +322,7 @@ uint8_t MLX90393_ReadMeasurementAxisAll( MLX90393 *dev, uint16_t *XmagRead, uint
 	uint8_t dataBuffer[RM_DATA_LENGHT] = { 0x00 };
 
 	/* Reads data from MLX90393 device in all axis */
-	readStatus = MLX90393_RM( dev, 0x08, dataBuffer );
+	readStatus = MLX90393_RM( dev, MLX90393_AXIS_ALL, dataBuffer );
 
 	*XmagRead = ( dataBuffer[2] << 8 ) | dataBuffer[1];
 	*YmagRead = ( dataBuffer[4] << 8 ) | dataBuffer[3];
