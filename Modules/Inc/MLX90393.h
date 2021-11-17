@@ -150,7 +150,7 @@ typedef union
 /* Function prototypes */
 
 uint8_t MLX90393_Init( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle );
-uint8_t MLX90393_ReadMeasurementAxisAll( MLX90393 *dev, uint16_t *XmagRead, uint16_t *YmagRead, uint16_t *ZmagRead );
+uint8_t MLX90393_ReadMeasurementAxisAll( MLX90393 *dev, int16_t *XmagRead, int16_t *YmagRead, int16_t *ZmagRead );
 
 HAL_StatusTypeDef sendI2C( I2C_HandleTypeDef *hi2c, uint8_t *receiveBuffer, uint8_t *sendBuffer, uint8_t sendMessageLength, uint8_t receiveMessageLength );
 
