@@ -68,7 +68,7 @@ void MX_FREERTOS_Init(void);
 
 void taskSensorMAG ( void *pvParameters )
 {
-	uint16_t magX, magY, magZ;
+	int16_t magX, magY, magZ;
 
 	while(1)
 	{
@@ -79,6 +79,8 @@ void taskSensorMAG ( void *pvParameters )
 
 void taskSensorIMU ( void *pvParameters )
 {
+
+	char txBuffer[128];
 
 	while(1)
 	{
@@ -141,7 +143,8 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+
+	HAL_Init();
 
   /* USER CODE BEGIN Init */
 
