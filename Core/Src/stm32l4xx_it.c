@@ -23,11 +23,10 @@
 #include "stm32l4xx_it.h"
 #include "FreeRTOS.h"
 #include "task.h"
-
-#include "MLX90393.h"
-#include "IIM42652.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "MLX90393.h"
+#include "IIM42652.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -191,7 +190,7 @@ void SysTick_Handler(void)
   */
 void EXTI15_10_IRQHandler(void)
 {
-	/* USER CODE BEGIN EXTI15_10_IRQn 0 */
+  /* USER CODE BEGIN EXTI15_10_IRQn 0 */
 
 	/* REqads pending register 1 from external interrupt struct */
 	uint32_t pending = EXTI->PR1;
@@ -210,13 +209,13 @@ void EXTI15_10_IRQHandler(void)
 	}
 
 
-	/* USER CODE END EXTI15_10_IRQn 0 */
-	//HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_12);
-	//HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_15);
-	/* USER CODE BEGIN EXTI15_10_IRQn 1 */
+  /* USER CODE END EXTI15_10_IRQn 0 */
+  //HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_12);
+  //HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_15);
+  /* USER CODE BEGIN EXTI15_10_IRQn 1 */
 
 
-	/* USER CODE END EXTI15_10_IRQn 1 */
+  /* USER CODE END EXTI15_10_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */
