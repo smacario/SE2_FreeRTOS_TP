@@ -34,7 +34,9 @@ Core/Src/stm32l4xx_it.o: ../Core/Src/stm32l4xx_it.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
+ C:/Users/smaca/Desktop/Documentos/UAV/Software/STM32/STM32L451RCT_FreeRTOS/Modules/Inc/MLX90393.h \
+ C:/Users/smaca/Desktop/Documentos/UAV/Software/STM32/STM32L451RCT_FreeRTOS/Modules/Inc/IIM42652.h
 
 ../Core/Inc/main.h:
 
@@ -109,3 +111,7 @@ Core/Src/stm32l4xx_it.o: ../Core/Src/stm32l4xx_it.c ../Core/Inc/main.h \
 ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
+
+C:/Users/smaca/Desktop/Documentos/UAV/Software/STM32/STM32L451RCT_FreeRTOS/Modules/Inc/MLX90393.h:
+
+C:/Users/smaca/Desktop/Documentos/UAV/Software/STM32/STM32L451RCT_FreeRTOS/Modules/Inc/IIM42652.h:
