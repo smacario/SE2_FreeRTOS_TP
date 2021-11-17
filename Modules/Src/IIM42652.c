@@ -26,7 +26,7 @@
 
 
 SemaphoreHandle_t ImuIntSemaphore;	// Handler of semaphore that blocks the sensor reading function until the DRDY interrupt arrives.
-uint8_t DRDY_IIMFlag = 0x00;			// Flags the occurrence of the DRDY interrupt from IIM42652.
+uint8_t DRDY_IIMFlag = 0x00;		// Flags the occurrence of the DRDY interrupt from IIM42652.
 
 HAL_StatusTypeDef IIM42652_ReadRegister( IIM42652 *dev, uint8_t reg, uint8_t *data )
 {
@@ -174,7 +174,7 @@ HAL_StatusTypeDef IIM42652_ConfigInterrupt( IIM42652 *dev )
 	HAL_StatusTypeDef status = HAL_OK;
 
 	/* Implement interrupt configuration */
-	config = IIM42654_SET_INT1 | IIM42652_SET_INT_ACTIVE_HI;
+	config = IIM42654_SET_INT1 | IIM42652_SET_INT_ACTIVE_HI | IIM42652_SET_INT2;
 	status = IIM42652_WriteRegister( dev, INT_CONFIG_ADD, &config );
 
 	config = IIM42652_SET_UI_DRDY_INT_CLEAR;
@@ -235,7 +235,7 @@ uint8_t IIM42652_Init( IIM42652 *dev, I2C_HandleTypeDef *i2cHandle )
 	    IIM42652_setConfigGyro( dev, GYR_CFG );
 
 	    ACC_CFG.accel_fs_sel      = IIM42652_SET_ACCEL_FS_SEL_8g;
-	    ACC_CFG.accel_odr         = IIM42652_SET_ACCEL_ODR_50Hz;
+	    ACC_CFG.accel_odr         = IIM42652_SET_ACCEL_ODR_100Hz;
 	    ACC_CFG.accel_ui_filt_bw  = IIM42652_SET_ACCEL_UI_FILT_BW_ODR_4;
 	    ACC_CFG.accel_ui_filt_ord = IIM42652_SET_ACCEL_UI_FILT_ORD_2st;
 	    ACC_CFG.accel_dec2_m2_ord = IIM42652_SET_ACCEL_DEC2_M2_ORD_3st;
@@ -255,25 +255,30 @@ HAL_StatusTypeDef IIM42652_ReadMeasurementAxisAll( IIM42652 *dev )
 {
 
 	HAL_StatusTypeDef readStatus;
-	uint8_t rxBuffer[6];
-	uint16_t xAccRead, yAccRead, zAccRead;
-
-
-	readStatus = IIM42652_ReadMultipleRegisters( dev, ACCL_DATA_XHI_ADD, rxBuffer, 6 );
-
-	xAccRead = (rxBuffer[0] << 8) | rxBuffer[1];
-	yAccRead = (rxBuffer[2] << 8) | rxBuffer[3];
-	zAccRead = (rxBuffer[4] << 8) | rxBuffer[5];
-
+	uint8_t rxBuffer[12];
+	int16_t xAccRead, yAccRead, zAccRead;
+	int16_t xGyrRead, yGyrRead, zGyrRead;
 
 	/* Takes semaphore until DRDY is ready again */
 	xSemaphoreTake( ImuIntSemaphore, portMAX_DELAY );
 	DRDY_IIMFlag = 0x00;
 
+	/* Reads Accelerometer and gyroscope data */
+	readStatus = IIM42652_ReadMultipleRegisters( dev, ACCL_DATA_XHI_ADD, rxBuffer, 12 );
+
+	xAccRead = (rxBuffer[0] << 8)  | rxBuffer[1];
+	yAccRead = (rxBuffer[2] << 8)  | rxBuffer[3];
+	zAccRead = (rxBuffer[4] << 8)  | rxBuffer[5];
+
+	xGyrRead = (rxBuffer[6] << 8)  | rxBuffer[7];
+	yGyrRead = (rxBuffer[8] << 8)  | rxBuffer[9];
+	zGyrRead = (rxBuffer[10] << 8) | rxBuffer[11];
+
 	return readStatus;
 }
 
 
+/* Callback for device interrupt */
 void IIM42652_DRDYCallback( void )
 {
 	/* Gives semaphore and yields */
@@ -286,6 +291,12 @@ void IIM42652_DRDYCallback( void )
 
 		DRDY_IIMFlag = 0x01;
 	}
+}
+
+/* Callback for I2C callback */
+void IIM42652_I2C2Callback( void )
+{
+
 }
 
 
