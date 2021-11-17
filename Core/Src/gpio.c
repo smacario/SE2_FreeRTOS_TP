@@ -22,6 +22,7 @@
 
 /* USER CODE BEGIN 0 */
 #include "MLX90393.h"
+#include "IIM42652.h"
 /* USER CODE END 0 */
 
 /*----------------------------------------------------------------------------*/
@@ -60,12 +61,11 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
-  /*
   GPIO_InitStruct.Pin = INT_MAG_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(INT_MAG_GPIO_Port, &GPIO_InitStruct);
-*/
+
   /*Configure GPIO pin : PtPin */
   GPIO_InitStruct.Pin = INT_IMU_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
@@ -104,6 +104,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		IIM42652_DRDYCallback();
 	}
 }
+
+
+
+
+
+
 /* USER CODE END 2 */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
