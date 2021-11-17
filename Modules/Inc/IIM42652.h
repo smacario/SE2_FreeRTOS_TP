@@ -231,7 +231,8 @@
 #define IIM42652_SET_BANK_4                              0x04
 
 #define IIM42654_SET_INT1						         0x04
-#define IIM42652_SET_INT_ACTIVE_HI						 0x01
+#define IIM42652_SET_INT2								 0x20
+#define IIM42652_SET_INT_ACTIVE_HI						 0x09
 #define IIM42652_SET_UI_DRDY_INT_CLEAR					 0x20
 #define IIM42652_SET_UI_DRDY_INT1_EN					 0x08
 
@@ -246,8 +247,8 @@
 typedef struct {
 	I2C_HandleTypeDef *i2cHandle;
 
-	float acc[3];
-	float gyr[3];
+	uint16_t acc[3];
+	uint16_t gyr[3];
 
 	float temp_c;
 }IIM42652;
@@ -298,6 +299,9 @@ HAL_StatusTypeDef IIM42652_ReadRegister( IIM42652 *dev, uint8_t reg, uint8_t *da
 HAL_StatusTypeDef IIM42652_ReadMultipleRegisters( IIM42652 *dev, uint8_t reg, uint8_t *data, uint8_t length );
 
 HAL_StatusTypeDef IIM42652_WriteRegister( IIM42652 *dev, uint8_t reg, uint8_t *data );
+
+void IIM42652_DRDYCallback( void );
+void IIM42652_I2C2Callback( void );
 
 
 #endif /* IIM42652_H_ */
