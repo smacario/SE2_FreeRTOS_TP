@@ -174,7 +174,8 @@ HAL_StatusTypeDef IIM42652_ConfigInterrupt( IIM42652 *dev )
 	HAL_StatusTypeDef status = HAL_OK;
 
 	/* Implement interrupt configuration */
-	config = IIM42654_SET_INT1 | IIM42652_SET_INT_ACTIVE_HI | IIM42652_SET_INT2;
+	//config = IIM42654_SET_INT1 | IIM42652_SET_INT_ACTIVE_HI | IIM42652_SET_INT2;
+	config = 0x00;
 	status = IIM42652_WriteRegister( dev, INT_CONFIG_ADD, &config );
 
 	config = IIM42652_SET_UI_DRDY_INT_CLEAR;
@@ -228,7 +229,7 @@ uint8_t IIM42652_Init( IIM42652 *dev, I2C_HandleTypeDef *i2cHandle )
 
 
 		GYR_CFG.gyro_fs_sel      = IIM42652_SET_GYRO_FS_SEL_500_dps;
-		GYR_CFG.gyro_odr         = IIM42652_SET_GYRO_ODR_50Hz;
+		GYR_CFG.gyro_odr         = IIM42652_SET_GYRO_ODR_12_5Hz;
 		GYR_CFG.gyro_ui_filt_ord = IIM42652_SET_GYRO_UI_FILT_ORD_2st;
 		GYR_CFG.gyro_dec2_m2_ord = IIM42652_SET_GYRO_DEC2_M2_ORD_3st;
 		GYR_CFG.gyro_ui_filt_bw  = IIM42652_SET_GYRO_UI_FILT_BW_ODR_4;
@@ -283,7 +284,7 @@ void IIM42652_DRDYCallback( void )
 {
 	/* Gives semaphore and yields */
 
-	if(DRDY_IIMFlag == 0x00)
+	//if(DRDY_IIMFlag == 0x00)
 	{
 		BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 		xSemaphoreGiveFromISR( ImuIntSemaphore, &xHigherPriorityTaskWoken );

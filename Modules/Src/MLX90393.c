@@ -269,6 +269,8 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 	uint8_t status = 0;
 	status = MLX90393_RT( dev );
 
+	vTaskDelay( 5 / portTICK_PERIOD_MS );
+
 	if( status == MLX90393_STATUS_ERROR ) return HAL_ERROR;
 	else{
 
@@ -302,7 +304,7 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
 		MagIntSemaphore = xSemaphoreCreateBinary();
 
 		/* Starts burst mode */
-		MLX90393_SB( dev, MLX90393_AXIS_ALL );
+		//MLX90393_SB( dev, MLX90393_AXIS_ALL );
 
 		status = status1 | status2 | status3;
 
