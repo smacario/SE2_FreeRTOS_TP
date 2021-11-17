@@ -316,10 +316,14 @@ uint8_t MLX90393_Init ( MLX90393 *dev, I2C_HandleTypeDef *i2cHandle )
  * The data is output in the following order: T (MSB), T (LSB), X (MSB), X (LSB), Y (MSB), Y (LSB), Z (MSB), Z (LSB)
  *
  */
-uint8_t MLX90393_ReadMeasurementAxisAll( MLX90393 *dev, uint16_t *XmagRead, uint16_t *YmagRead, uint16_t *ZmagRead )
+uint8_t MLX90393_ReadMeasurementAxisAll( MLX90393 *dev, int16_t *XmagRead, int16_t *YmagRead, int16_t *ZmagRead )
 {
 	uint8_t readStatus;
 	uint8_t dataBuffer[RM_DATA_LENGHT] = { 0x00 };
+
+	/* Clears the DRDY flag and takes semaphore*/
+	DRDYFlag = 0x00;
+	xSemaphoreTake( MagIntSemaphore, portMAX_DELAY );
 
 	/* Reads data from MLX90393 device in all axis */
 	readStatus = MLX90393_RM( dev, MLX90393_AXIS_ALL, dataBuffer );
@@ -328,9 +332,6 @@ uint8_t MLX90393_ReadMeasurementAxisAll( MLX90393 *dev, uint16_t *XmagRead, uint
 	*YmagRead = ( dataBuffer[4] << 8 ) | dataBuffer[3];
 	*ZmagRead = ( dataBuffer[6] << 8 ) | dataBuffer[5];
 
-	/* Clears the DRDY flag and takes semaphore*/
-	DRDYFlag = 0x00;
-	xSemaphoreTake( MagIntSemaphore, portMAX_DELAY );
 
 	return readStatus;
 }
