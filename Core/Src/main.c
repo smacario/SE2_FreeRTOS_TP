@@ -80,8 +80,6 @@ void taskSensorMAG ( void *pvParameters )
 void taskSensorIMU ( void *pvParameters )
 {
 
-	char txBuffer[128];
-
 	while(1)
 	{
 		IIM42652_ReadMeasurementAxisAll( &IMU );
