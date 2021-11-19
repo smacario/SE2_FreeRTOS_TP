@@ -24,19 +24,34 @@
 #define BIT_MASK_BIT_6    0x40
 #define BIT_MASK_BIT_7    0x80
 
+/* Local data declaration */
 
-SemaphoreHandle_t ImuIntSemaphore;	// Handler of semaphore that blocks the sensor reading function until the DRDY interrupt arrives.
-uint8_t DRDY_IIMFlag = 0x00;		// Flags the occurrence of the DRDY interrupt from IIM42652.
+static SemaphoreHandle_t ImuIntSemaphore;	// Handler of semaphore that blocks the sensor reading function until the DRDY interrupt arrives.
+static SemaphoreHandle_t xSemI2C_transfer;	// Handler of semaphore that blocks the I2C transaction until the callback is called.
+
+uint8_t DRDY_IIMFlag = 0x00;				// Flags the occurrence of the DRDY interrupt from IIM42652.
+
+
+/* Function implementation */
 
 HAL_StatusTypeDef IIM42652_ReadRegister( IIM42652 *dev, uint8_t reg, uint8_t *data )
 {
-	return HAL_I2C_Mem_Read( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+	//return HAL_I2C_Mem_Read( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+
+	/* Start non bloking transaction and blocks until semaphore is given by I2C transaction callback */
+	HAL_StatusTypeDef status;
+	status = HAL_I2C_Mem_Read_IT( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1);
+	xSemaphoreTake(xSemI2C_transfer, portMAX_DELAY);
+
+	return status;
 }
 
 
 HAL_StatusTypeDef IIM42652_ReadMultipleRegisters( IIM42652 *dev, uint8_t reg, uint8_t *data, uint8_t length )
 {
-	return HAL_I2C_Mem_Read( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, length, HAL_MAX_DELAY);
+	//return HAL_I2C_Mem_Read( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, length, HAL_MAX_DELAY);
+	return HAL_I2C_Mem_Read_IT( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, length);
+	xSemaphoreTake(xSemI2C_transfer, portMAX_DELAY);
 }
 
 
@@ -60,8 +75,9 @@ HAL_StatusTypeDef IIM42652_SoftReset( IIM42652 *dev )
 
 	status |= IIM42652_WriteRegister( dev, DEVICE_CONFIG_ADD, &config );
 
-	/* Waits for reset */
-	vTaskDelay( 5 / portTICK_PERIOD_MS );
+	/* Waits 2ms for soft reset to be effective */
+	//vTaskDelay( 2 / portTICK_PERIOD_MS );
+	HAL_Delay( 2 );
 
 	return status;
 }
@@ -82,7 +98,8 @@ HAL_StatusTypeDef IIM42652_EnableGyro( IIM42652 *dev )
 	status |= IIM42652_WriteRegister( dev, PWR_MGMT0_ADD, &config );
 
 	/* Waits for gyroscope power on */
-	vTaskDelay( 5 / portTICK_PERIOD_MS );
+	//vTaskDelay( 1 / portTICK_PERIOD_MS );
+	HAL_Delay( 1 );
 
 	return status;
 }
@@ -103,7 +120,8 @@ HAL_StatusTypeDef IIM42652_EnableAccel( IIM42652 *dev )
 	status |= IIM42652_WriteRegister( dev, PWR_MGMT0_ADD, &config );
 
 	/* Waits for accelerometer power on */
-	vTaskDelay( 5 / portTICK_PERIOD_MS );
+	HAL_Delay( 1 );
+	//vTaskDelay( 1 / portTICK_PERIOD_MS );
 
 	return status;
 }
@@ -194,7 +212,11 @@ uint8_t IIM42652_Init( IIM42652 *dev, I2C_HandleTypeDef *i2cHandle )
 	IIM42652_ACCL_CFG_t ACC_CFG;
 	IIM42652_GYRO_CFG_t GYR_CFG;
 
-	/* Initialise structure parameters */
+	/* Initializes I2C semaphore and takes it */
+	xSemI2C_transfer = xSemaphoreCreateBinary();
+	xSemaphoreTake(xSemI2C_transfer, 0);
+
+	/* Initializes structure parameters */
 	dev->i2cHandle = i2cHandle;
 
 	dev->acc[0] = 0.0f;
@@ -223,7 +245,6 @@ uint8_t IIM42652_Init( IIM42652 *dev, I2C_HandleTypeDef *i2cHandle )
 
 		/* Initialize routine */
 		status |= IIM42652_SoftReset  ( dev );
-	    status |= IIM42652_ConfigInterrupt( dev );
 		status |= IIM42652_EnableGyro ( dev );
 		status |= IIM42652_EnableAccel( dev );
 
@@ -233,17 +254,21 @@ uint8_t IIM42652_Init( IIM42652 *dev, I2C_HandleTypeDef *i2cHandle )
 		GYR_CFG.gyro_ui_filt_ord = IIM42652_SET_GYRO_UI_FILT_ORD_2st;
 		GYR_CFG.gyro_dec2_m2_ord = IIM42652_SET_GYRO_DEC2_M2_ORD_3st;
 		GYR_CFG.gyro_ui_filt_bw  = IIM42652_SET_GYRO_UI_FILT_BW_ODR_4;
-	    IIM42652_setConfigGyro( dev, GYR_CFG );
+	    status |= IIM42652_setConfigGyro( dev, GYR_CFG );
 
 	    ACC_CFG.accel_fs_sel      = IIM42652_SET_ACCEL_FS_SEL_8g;
-	    ACC_CFG.accel_odr         = IIM42652_SET_ACCEL_ODR_100Hz;
+	    ACC_CFG.accel_odr         = IIM42652_SET_ACCEL_ODR_12_5Hz;
 	    ACC_CFG.accel_ui_filt_bw  = IIM42652_SET_ACCEL_UI_FILT_BW_ODR_4;
 	    ACC_CFG.accel_ui_filt_ord = IIM42652_SET_ACCEL_UI_FILT_ORD_2st;
 	    ACC_CFG.accel_dec2_m2_ord = IIM42652_SET_ACCEL_DEC2_M2_ORD_3st;
-	    IIM42652_setConfigAccel( dev, ACC_CFG );
+	    status |= IIM42652_setConfigAccel( dev, ACC_CFG );
+
+	    /* Enables device interrupt on pin INT1 */
+	    status |= IIM42652_ConfigInterrupt( dev );
 
 	    /* Initializes semaphore */
 	    ImuIntSemaphore = xSemaphoreCreateBinary();
+	    //xSemaphoreTake(ImuIntSemaphore, 0);
 	}
 
 
@@ -284,7 +309,7 @@ void IIM42652_DRDYCallback( void )
 {
 	/* Gives semaphore and yields */
 
-	//if(DRDY_IIMFlag == 0x00)
+	if(DRDY_IIMFlag == 0x00)
 	{
 		BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 		xSemaphoreGiveFromISR( ImuIntSemaphore, &xHigherPriorityTaskWoken );
@@ -297,7 +322,9 @@ void IIM42652_DRDYCallback( void )
 /* Callback for I2C callback */
 void IIM42652_I2C2Callback( void )
 {
-
+	BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    xSemaphoreGiveFromISR( xSemI2C_transfer, &xHigherPriorityTaskWoken );
+    portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 }
 
 
