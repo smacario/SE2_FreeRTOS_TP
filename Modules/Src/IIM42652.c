@@ -13,6 +13,7 @@
 #include "cmsis_os.h"
 #include "semphr.h"
 #include "gpio.h"
+#include "usart.h"
 
 /* Config bit masks */
 #define BIT_MASK_BIT_0    0x01
@@ -36,28 +37,42 @@ uint8_t DRDY_IIMFlag = 0x00;				// Flags the occurrence of the DRDY interrupt fr
 
 HAL_StatusTypeDef IIM42652_ReadRegister( IIM42652 *dev, uint8_t reg, uint8_t *data )
 {
-	//return HAL_I2C_Mem_Read( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
 
-	/* Start non bloking transaction and blocks until semaphore is given by I2C transaction callback */
+	return HAL_I2C_Mem_Read( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+	/* Start non-blocking I2C transaction and blocks until semaphore is given by I2C callback */
+/*
 	HAL_StatusTypeDef status;
 	status = HAL_I2C_Mem_Read_IT( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1);
+	xSemaphoreTake(xSemI2C_transfer, portMAX_DELAY);
+
+	return status;
+*/
+}
+
+
+HAL_StatusTypeDef IIM42652_ReadMultipleRegisters( IIM42652 *dev, uint8_t reg, uint8_t *data, uint8_t length )
+{
+	/* Start non-blocking I2C transaction and blocks until semaphore is given by I2C callback */
+	HAL_StatusTypeDef status;
+	status = HAL_I2C_Mem_Read_IT( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, length);
 	xSemaphoreTake(xSemI2C_transfer, portMAX_DELAY);
 
 	return status;
 }
 
 
-HAL_StatusTypeDef IIM42652_ReadMultipleRegisters( IIM42652 *dev, uint8_t reg, uint8_t *data, uint8_t length )
-{
-	//return HAL_I2C_Mem_Read( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, length, HAL_MAX_DELAY);
-	return HAL_I2C_Mem_Read_IT( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, length);
-	xSemaphoreTake(xSemI2C_transfer, portMAX_DELAY);
-}
-
-
 HAL_StatusTypeDef IIM42652_WriteRegister( IIM42652 *dev, uint8_t reg, uint8_t *data )
 {
 	return HAL_I2C_Mem_Write( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
+
+	/*
+	HAL_StatusTypeDef status;
+	status = HAL_I2C_Mem_Write_IT( dev->i2cHandle, IIM42652_I2C_ADDRESS, reg, I2C_MEMADD_SIZE_8BIT, data, 1);
+	xSemaphoreTake(xSemI2C_transfer, portMAX_DELAY);
+
+	return status;
+
+	*/
 }
 
 
@@ -299,6 +314,11 @@ HAL_StatusTypeDef IIM42652_ReadMeasurementAxisAll( IIM42652 *dev )
 	xGyrRead = (rxBuffer[6] << 8)  | rxBuffer[7];
 	yGyrRead = (rxBuffer[8] << 8)  | rxBuffer[9];
 	zGyrRead = (rxBuffer[10] << 8) | rxBuffer[11];
+
+	/* Transmits data to PC */
+	HAL_GPIO_WritePin(NAV1_OUT_GPIO_Port, NAV1_OUT_Pin, 1);
+	HAL_UART_Transmit_IT( &huart3, rxBuffer, 12 );
+	HAL_GPIO_WritePin(NAV1_OUT_GPIO_Port, NAV1_OUT_Pin, 0);
 
 	return readStatus;
 }
