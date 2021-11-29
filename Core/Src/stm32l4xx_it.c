@@ -46,7 +46,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-
+extern volatile unsigned long ulHighFrequencyTimerTicks;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -61,6 +61,8 @@
 
 /* External variables --------------------------------------------------------*/
 extern I2C_HandleTypeDef hi2c2;
+extern TIM_HandleTypeDef htim16;
+extern UART_HandleTypeDef huart3;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -186,19 +188,49 @@ void SysTick_Handler(void)
 /******************************************************************************/
 
 /**
+  * @brief This function handles TIM1 update interrupt and TIM16 global interrupt.
+  */
+void TIM1_UP_TIM16_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM1_UP_TIM16_IRQn 0 */
+
+	ulHighFrequencyTimerTicks++;
+
+  /* USER CODE END TIM1_UP_TIM16_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim16);
+  /* USER CODE BEGIN TIM1_UP_TIM16_IRQn 1 */
+
+  /* USER CODE END TIM1_UP_TIM16_IRQn 1 */
+}
+
+/**
   * @brief This function handles I2C2 event interrupt.
   */
 void I2C2_EV_IRQHandler(void)
 {
   /* USER CODE BEGIN I2C2_EV_IRQn 0 */
 
-	IIM42652_I2C2Callback();
+  IIM42652_I2C2Callback();
 
   /* USER CODE END I2C2_EV_IRQn 0 */
   HAL_I2C_EV_IRQHandler(&hi2c2);
   /* USER CODE BEGIN I2C2_EV_IRQn 1 */
 
   /* USER CODE END I2C2_EV_IRQn 1 */
+}
+
+/**
+  * @brief This function handles USART3 global interrupt.
+  */
+void USART3_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART3_IRQn 0 */
+
+  /* USER CODE END USART3_IRQn 0 */
+  HAL_UART_IRQHandler(&huart3);
+  /* USER CODE BEGIN USART3_IRQn 1 */
+
+  /* USER CODE END USART3_IRQn 1 */
 }
 
 /**
@@ -226,8 +258,8 @@ void EXTI15_10_IRQHandler(void)
 
 
   /* USER CODE END EXTI15_10_IRQn 0 */
-  //HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_12);
-  //HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_15);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_12);
+  HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_15);
   /* USER CODE BEGIN EXTI15_10_IRQn 1 */
 
 

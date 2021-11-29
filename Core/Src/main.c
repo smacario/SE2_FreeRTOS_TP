@@ -21,6 +21,8 @@
 #include "main.h"
 #include "cmsis_os.h"
 #include "i2c.h"
+#include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -52,6 +54,8 @@ MLX90393 MAG;
 TaskHandle_t taskLED_Handler 	= NULL;
 TaskHandle_t taskMAG_Handler 	= NULL;
 TaskHandle_t tasIMU_Handler 	= NULL;
+
+volatile unsigned long ulHighFrequencyTimerTicks;
 
 /* USER CODE END PV */
 
@@ -98,16 +102,19 @@ void taskLED ( void *pvParameters )
 	/* This section initializes sensors and sensors tasks */
 
 	i2cStatus |= IIM42652_Init(&IMU, &hi2c2);
-	i2cStatus |= MLX90393_Init(&MAG, &hi2c2);
+	//i2cStatus |= MLX90393_Init(&MAG, &hi2c2);
 
-	if(i2cStatus == HAL_ERROR)  { /* Error condition */ }
+	if(i2cStatus == HAL_ERROR)
+	{ /* Error condition */
+		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, 1);
+	}
 
 	enableIRQ();
 
-	BaseType_t xReturnIMU = xTaskCreate ( taskSensorIMU, "IMU", 100, NULL, 3, &tasIMU_Handler );
-	BaseType_t xReturnMAG = xTaskCreate ( taskSensorMAG, "MAG", 100, NULL, 3, &taskMAG_Handler );
+	BaseType_t xReturnIMU = xTaskCreate ( taskSensorIMU, "IMU", 300, NULL, 3, &tasIMU_Handler );
+	//BaseType_t xReturnMAG = xTaskCreate ( taskSensorMAG, "MAG", 100, NULL, 3, &taskMAG_Handler );
 
-	if( ( xReturnIMU | xReturnMAG ) == pdFALSE )  { /* Error condition */ }
+	//if( ( xReturnIMU | xReturnMAG ) == pdFALSE )  { /* Error condition */ }
 
 
 	while(1)
@@ -117,9 +124,6 @@ void taskLED ( void *pvParameters )
 		pin_state = !pin_state;
 
 		HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, pin_state);
-		HAL_Delay(50);
-
-		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, !pin_state);
 		HAL_Delay(50);
 
 	}
@@ -150,7 +154,6 @@ int main(void)
 
   if( ( xReturnLED ) == pdFALSE ) { /* Error condition */ }
 
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -163,7 +166,12 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_I2C2_Init();
+  MX_TIM16_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
+
+  /* Disables INT pin for UART */
+  HAL_GPIO_WritePin(NAV1_OUT_GPIO_Port, NAV1_OUT_Pin, 0x00);
 
   /* USER CODE END 2 */
 
@@ -233,6 +241,15 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+void configureTimerForRunTimeStats(void) {
+  ulHighFrequencyTimerTicks = 0;
+  HAL_TIM_Base_Start_IT(&htim16);
+}
+
+unsigned long getRunTimeCounterValue(void) {
+  return ulHighFrequencyTimerTicks;
+}
 
 /* USER CODE END 4 */
 
