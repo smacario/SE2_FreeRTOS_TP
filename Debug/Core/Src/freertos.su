@@ -1,2 +1,4 @@
-freertos.c:73:6:MX_FREERTOS_Init	8	static
-freertos.c:115:6:StartDefaultTask	16	static
+freertos.c:74:13:configureTimerForRunTimeStats	4	static
+freertos.c:79:22:getRunTimeCounterValue	4	static
+freertos.c:90:6:MX_FREERTOS_Init	8	static
+freertos.c:132:6:StartDefaultTask	16	static
